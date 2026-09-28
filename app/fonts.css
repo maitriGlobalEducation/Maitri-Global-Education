@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "Epika";
+    src: url("/fonts/Epika-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Epika";
+    src: url("/fonts/Epika-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Epika";
+    src: url("/fonts/Epika-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Epika";
+    src: url("/fonts/Epika-Thin.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+}
