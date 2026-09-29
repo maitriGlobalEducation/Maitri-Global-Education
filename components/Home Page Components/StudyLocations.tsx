@@ -64,9 +64,9 @@ export default function StudyLocations() {
     via-[#fff0b3]
     to-[#e8c166]
     bg-clip-text
+    text-transparent
     text-4xl
     leading-[0.95]
-    text-transparent
     uppercase
     sm:text-5xl
     lg:text-6xl

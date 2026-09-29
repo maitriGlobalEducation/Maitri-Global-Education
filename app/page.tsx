@@ -1,7 +1,5 @@
 import Badge from "@/components/Home Page Components/Badge";
-import Footer from "@/components/Home Page Components/Footer";
 import HeroSlider from "@/components/Home Page Components/Hero";
-import InterestedSection from "@/components/Home Page Components/EliteCareerChoices";
 import Services from "@/components/Home Page Components/Services";
 import StudyLocations from "@/components/Home Page Components/StudyLocations";
 import Testimonials from "@/components/Home Page Components/Testimonials";
@@ -26,7 +24,6 @@ export default function Home() {
       <EliteCareerChoices />
       <EventsEngagement />
       <Blogs />
-      <Footer />
     </div>
   );
 }
