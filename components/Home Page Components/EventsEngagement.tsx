@@ -109,7 +109,7 @@ export default function EventsEngagement() {
         </div>
 
         {/* Controls */}
-        <div className="-mt-4 flex justify-center gap-3 sm:mt-0">
+        <div className="mt-8 flex justify-center gap-3 sm:mt-0">
           <button
             type="button"
             onClick={previous}
