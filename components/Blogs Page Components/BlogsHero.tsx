@@ -2,7 +2,7 @@ export default function BlogsHero() {
   return (
     <section
       style={{
-        backgroundImage: "url('/Images/blogs/BlogsHeroImg.jpg')",
+        backgroundImage: "url('/Images/Blogs/BlogsHeroImg.jpg')",
       }}
       className="
         flex

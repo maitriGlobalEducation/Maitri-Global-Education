@@ -209,7 +209,7 @@ export default function UniversityScholarships() {
                           </p>
                         </div>
 
-                        <div className="relative mt-1 h-10 w-24 shrink-0">
+                        <div className="relative mt-1 h-10 w-24 lg:h-20 lg:w-30 shrink-0">
                           <Image
                             src={scholarship.logo}
                             alt={`${scholarship.university} logo`}

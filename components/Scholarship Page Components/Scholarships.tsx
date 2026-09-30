@@ -17,7 +17,7 @@ const scholarships: Scholarship[] = [
     title: "SCHOLARSHIP",
     amount: "€7000",
     deadline: "2025-09-27",
-    image: "/Images/scholarship/domus.png",
+    image: "/Images/Scholarship/domus.png",
     href: "/apply",
   },
   {
@@ -25,7 +25,7 @@ const scholarships: Scholarship[] = [
     title: "SCHOLARSHIP",
     amount: "€15,000",
     deadline: "2025-08-30",
-    image: "/Images/scholarship/marangoni.jpg",
+    image: "/Images/Scholarship/marangoni.jpg",
     href: "/apply",
   },
   {
@@ -33,7 +33,7 @@ const scholarships: Scholarship[] = [
     title: "SCHOLARSHIP",
     amount: "€12,000",
     deadline: "2025-09-04",
-    image: "/Images/scholarship/naba.jpg",
+    image: "/Images/Scholarship/naba.jpg",
     href: "/apply",
   },
   {
@@ -41,7 +41,7 @@ const scholarships: Scholarship[] = [
     title: "SCHOLARSHIP",
     amount: "€10,000",
     deadline: "2025-08-23",
-    image: "/Images/scholarship/polimoda.jpg",
+    image: "/Images/Scholarship/polimoda.jpg",
     href: "/apply",
   },
   {

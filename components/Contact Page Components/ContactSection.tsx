@@ -137,7 +137,7 @@ export default function ContactSection() {
               "
             >
               <Image
-                src="/Images/contact/contact-left.avif"
+                src="/Images/Contact/contact-left.avif"
                 alt="Get in touch with Maitri Global Education"
                 fill
                 sizes="(max-width: 640px) 260px, 300px"

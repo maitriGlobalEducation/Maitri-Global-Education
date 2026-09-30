@@ -11,6 +11,8 @@ export default function Hero() {
         loop
         muted
         playsInline
+        preload="metadata"
+        poster="/hero-poster.webp"
         className="absolute top-0 left-0 w-full h-full object-cover z-0 filter brightness-70"
       >
         <source src="/hero.mp4" type="video/mp4" />

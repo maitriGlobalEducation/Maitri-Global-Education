@@ -17,7 +17,7 @@ const events: Event[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/banquet-wedding.jpg",
+    image: "/Images/Events/banquet-wedding.jpg",
     href: "/events/event-1",
   },
   {
@@ -26,7 +26,7 @@ const events: Event[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/girl.jpg",
+    image: "/Images/Events/girl.jpg",
     href: "/events/event-2",
   },
   {
@@ -35,7 +35,7 @@ const events: Event[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/work.jpg",
+    image: "/Images/Events/work.jpg",
     href: "/events/event-3",
   },
 ];

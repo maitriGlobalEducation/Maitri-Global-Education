@@ -17,7 +17,7 @@ const blogs: Blog[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/banquet-wedding.jpg",
+    image: "/Images/Events/banquet-wedding.jpg",
     href: "/blogs/blog-1",
   },
   {
@@ -26,7 +26,7 @@ const blogs: Blog[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/girl.jpg",
+    image: "/Images/Events/girl.jpg",
     href: "/blogs/blog-2",
   },
   {
@@ -35,7 +35,7 @@ const blogs: Blog[] = [
     publishedOn: "25 Aug 2025",
     description:
       "Brief description of the blog content goes here. It should be concise and engaging to encourage readers to click through.",
-    image: "/Images/events/work.jpg",
+    image: "/Images/Events/work.jpg",
     href: "/blogs/blog-3",
   },
 ];

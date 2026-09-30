@@ -26,7 +26,7 @@ const events: EventItem[] = [
     id: 2,
     title: "Ocean",
     category: "The Blue Abyss",
-    image: "/Images/events/ocean.jpg",
+    image: "/Images/Events/ocean.jpg",
     buttonText: "Register Now",
     description:
       "Waves crashing onto the shore bring calmness and inspiration.",
@@ -36,7 +36,7 @@ const events: EventItem[] = [
     id: 3,
     title: "Mountains",
     category: "Where silence speaks",
-    image: "/Images/events/mountains.jpg",
+    image: "/Images/Events/mountains.jpg",
     buttonText: "Explore Event",
     description:
       "Peaceful view of the mountains with serene skies and fresh air.",

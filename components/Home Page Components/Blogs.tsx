@@ -19,7 +19,7 @@ const blogs: Blog[] = [
     title:
       "Designing for Attention: How Visual Communicators Are Adapting to Shorter Attention Spans",
     category: "Development",
-    image: "/Images/blogs/blogs-design.jpg",
+    image: "/Images/Blogs/blogs-design.jpg",
     href: "/blogs/blog-1",
   },
   {
@@ -27,7 +27,7 @@ const blogs: Blog[] = [
     title:
       "Mobility Meets Emotion: How Transportation Designers Are Shaping the Future of Human-Centric Travel",
     category: "Development",
-    image: "/Images/blogs/blogs-mobility.jpg",
+    image: "/Images/Blogs/blogs-mobility.jpg",
     href: "/blogs/blog-2",
   },
   {
@@ -35,7 +35,7 @@ const blogs: Blog[] = [
     title:
       "From Concept to Space: How Interior Designers Tell Stories Through Form and Function",
     category: "Development",
-    image: "/Images/blogs/blogs-interior.jpg",
+    image: "/Images/Blogs/blogs-interior.jpg",
     href: "/blogs/blog-3",
   },
   {
@@ -43,14 +43,14 @@ const blogs: Blog[] = [
     title:
       "Green is the New Black: Why Sustainability is the Future of Fashion Design",
     category: "Fashion",
-    image: "/Images/blogs/blogs-fashion.png",
+    image: "/Images/Blogs/blogs-fashion.png",
     href: "/blogs/blog-4",
   },
   {
     id: 5,
     title: "Study Smarter",
     category: "Development",
-    image: "/Images/blogs/blogs-study.jpg",
+    image: "/Images/Blogs/blogs-study.jpg",
     href: "/blogs/blog-5",
   },
 ];

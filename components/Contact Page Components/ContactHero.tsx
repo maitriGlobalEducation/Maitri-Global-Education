@@ -17,7 +17,7 @@ export default function ContactHero() {
         opacity-70
       "
       style={{
-        backgroundImage: "url('/Images/contact/contact.avif')",
+        backgroundImage: "url('/Images/Contact/contact.avif')",
       }}
     >
       {/* Subtle white overlay */}

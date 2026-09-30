@@ -2,7 +2,7 @@ export default function EventsHero() {
   return (
     <section
       style={{
-        backgroundImage: "url('/Images/events/EventsPageHero.jpg')",
+        backgroundImage: "url('/Images/Events/EventsPageHero.jpg')",
       }}
       className="
         flex
