@@ -3,71 +3,45 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import type { HomepageCareerChoicesContent } from "@/types/homepage";
 
-interface CareerChoice {
-  id: number;
-  title: string;
-  company: string;
-  image: string;
-  tags: string[];
+interface EliteCareerChoicesProps {
+  content?: HomepageCareerChoicesContent;
+  isVisible?: boolean;
 }
 
-const careerChoices: CareerChoice[] = [
-  {
-    id: 1,
-    title: "Accessory Designing and Building",
-    company: "Truck with Benefits",
-    image: "/Images/Careers/accessory.png",
-    tags: ["Design", "Build"],
-  },
-  {
-    id: 2,
-    title: "Fashion Design: A new way to design, build and automate",
-    company: "Venture.io",
-    image: "/Images/Careers/fashion-design.jpg",
-    tags: ["Design", "Build", "Automate"],
-  },
-  {
-    id: 3,
-    title: "Fashion Photography and Videography",
-    company: "GOMA",
-    image: "/Images/Careers/photography.png",
-    tags: ["Design", "Build"],
-  },
-  {
-    id: 4,
-    title: "Fashion Business: A new approach to design, build and automate",
-    company: "Skybox X Samsung",
-    image: "/Images/Careers/fashion-business.png",
-    tags: ["Design", "Build", "Automate"],
-  },
-  {
-    id: 5,
-    title: "Interior Design and Architecture Services",
-    company: "GOMA",
-    image: "/Images/Careers/interior-design.png",
-    tags: ["Design", "Creative"],
-  },
-];
+export default function EliteCareerChoices({
+  content,
+  isVisible = true,
+}: EliteCareerChoicesProps) {
+  const cards = content?.cards ?? [];
+  const heading = content?.heading || "Elite Career Choices";
 
-export default function EliteCareerChoices() {
   const [visibleCards, setVisibleCards] = useState(4);
-
-  // We start after the cloned cards.
-  const [currentIndex, setCurrentIndex] = useState(4);
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    Math.min(4, cards.length),
+  );
   const [transitionEnabled, setTransitionEnabled] = useState(true);
 
   const isAnimating = useRef(false);
 
+  const cloneCount = Math.min(visibleCards, cards.length);
+  const cardsPerView = Math.min(visibleCards, cards.length);
+
   useEffect(() => {
     const updateVisibleCards = () => {
+      let nextVisibleCards = 4;
+
       if (window.innerWidth < 640) {
-        setVisibleCards(1);
+        nextVisibleCards = 1;
       } else if (window.innerWidth < 1024) {
-        setVisibleCards(2);
-      } else {
-        setVisibleCards(4);
+        nextVisibleCards = 2;
       }
+
+      setVisibleCards(nextVisibleCards);
+      setCurrentIndex(Math.min(nextVisibleCards, cards.length));
+      setTransitionEnabled(false);
+      isAnimating.current = false;
     };
 
     updateVisibleCards();
@@ -77,16 +51,22 @@ export default function EliteCareerChoices() {
     return () => {
       window.removeEventListener("resize", updateVisibleCards);
     };
-  }, []);
+  }, [cards.length]);
+
+  if (!isVisible || cards.length === 0) {
+    return null;
+  }
+
+  const canNavigate = cards.length > visibleCards;
 
   const carouselItems = [
-    ...careerChoices.slice(-4),
-    ...careerChoices,
-    ...careerChoices.slice(0, 4),
+    ...cards.slice(-cloneCount),
+    ...cards,
+    ...cards.slice(0, cloneCount),
   ];
 
   const next = () => {
-    if (isAnimating.current) return;
+    if (!canNavigate || isAnimating.current) return;
 
     isAnimating.current = true;
     setTransitionEnabled(true);
@@ -94,7 +74,7 @@ export default function EliteCareerChoices() {
   };
 
   const previous = () => {
-    if (isAnimating.current) return;
+    if (!canNavigate || isAnimating.current) return;
 
     isAnimating.current = true;
     setTransitionEnabled(true);
@@ -104,16 +84,12 @@ export default function EliteCareerChoices() {
   const handleTransitionEnd = () => {
     isAnimating.current = false;
 
-    // Reached cloned cards on the right
-    if (currentIndex >= careerChoices.length + 4) {
+    if (currentIndex >= cards.length + cloneCount) {
       setTransitionEnabled(false);
-      setCurrentIndex(4);
-    }
-
-    // Reached cloned cards on the left
-    if (currentIndex < 4) {
+      setCurrentIndex(cloneCount);
+    } else if (currentIndex < cloneCount) {
       setTransitionEnabled(false);
-      setCurrentIndex(currentIndex + careerChoices.length);
+      setCurrentIndex(currentIndex + cards.length);
     }
   };
 
@@ -127,20 +103,20 @@ export default function EliteCareerChoices() {
             mb-10
             leading-none
             font-semibold
-          bg-linear-to-r
-    from-[#e8c166]
-    via-[#fff0b3]
-    to-[#e8c166]
-    bg-clip-text
-    text-4xl
-    text-transparent
+            bg-linear-to-r
+            from-[#e8c166]
+            via-[#fff0b3]
+            to-[#e8c166]
+            bg-clip-text
+            text-4xl
+            text-transparent
             sm:mb-12
             sm:text-5xl
             lg:mb-14
             lg:text-7xl
           "
         >
-          Elite Career Choices
+          {heading}
         </h2>
 
         {/* Carousel */}
@@ -152,7 +128,7 @@ export default function EliteCareerChoices() {
                 : ""
             }`}
             style={{
-              transform: `translateX(-${currentIndex * (100 / visibleCards)}%)`,
+              transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
             }}
             onTransitionEnd={handleTransitionEnd}
           >
@@ -161,53 +137,57 @@ export default function EliteCareerChoices() {
                 key={`${career.id}-${index}`}
                 className="shrink-0 px-2.5"
                 style={{
-                  width: `${100 / visibleCards}%`,
+                  width: `${100 / cardsPerView}%`,
                 }}
               >
                 <article className="group h-full overflow-hidden rounded-xl bg-[#181818]">
                   {/* Image */}
-                  <div className="relative h-95 overflow-hidden sm:h-105 lg:h-110">
-                    <Image
-                      src={career.image}
-                      alt={career.title}
-                      fill
-                      sizes="
-                        (max-width: 640px) 100vw,
-                        (max-width: 1024px) 50vw,
-                        25vw
-                      "
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-700
-                        ease-out
-                        group-hover:scale-105
-                      "
-                    />
+                  <div className="relative h-95 overflow-hidden bg-[#222] sm:h-105 lg:h-110">
+                    {career.image?.url && (
+                      <Image
+                        src={career.image.url}
+                        alt={career.title}
+                        fill
+                        sizes="
+                          (max-width: 640px) 100vw,
+                          (max-width: 1024px) 50vw,
+                          25vw
+                        "
+                        className="
+                          object-cover
+                          transition-transform
+                          duration-700
+                          ease-out
+                          group-hover:scale-105
+                        "
+                      />
+                    )}
 
                     {/* Tags */}
-                    <div className="absolute top-0 right-0 rounded-bl-2xl p-2 bg-black flex max-w-[90%] flex-wrap justify-end gap-2">
-                      {career.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="
-                            rounded-full
-                            border
-                            border-white/15
-                            bg-black/80
-                            px-3
-                            py-1.5
-                            text-[10px]
-                            font-semibold
-                            text-white
-                            backdrop-blur-sm
-                            sm:text-xs
-                          "
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    {career.tags.length > 0 && (
+                      <div className="absolute top-0 right-0 flex max-w-[90%] flex-wrap justify-end gap-2 rounded-bl-2xl bg-black p-2">
+                        {career.tags.map((tag, tagIndex) => (
+                          <span
+                            key={`${tag}-${tagIndex}`}
+                            className="
+                              rounded-full
+                              border
+                              border-white/15
+                              bg-black/80
+                              px-3
+                              py-1.5
+                              text-[10px]
+                              font-semibold
+                              text-white
+                              backdrop-blur-sm
+                              sm:text-xs
+                            "
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -217,7 +197,7 @@ export default function EliteCareerChoices() {
                     </h3>
 
                     <p className="mt-auto pt-3 text-sm text-gray-400">
-                      {career.company}
+                      {career.source}
                     </p>
                   </div>
                 </article>
@@ -227,51 +207,53 @@ export default function EliteCareerChoices() {
         </div>
 
         {/* Navigation */}
-        <div className="mt-7 flex justify-center gap-3">
-          <button
-            type="button"
-            onClick={previous}
-            aria-label="Previous career"
-            className="
-              flex
-              size-12
-              cursor-pointer
-              items-center
-              justify-center
-              rounded-full
-              bg-[#dce1e8]
-              text-black
-              transition-all
-              duration-300
-              hover:scale-105
-              hover:bg-white
-            "
-          >
-            <ChevronLeft size={21} />
-          </button>
+        {canNavigate && (
+          <div className="mt-7 flex justify-center gap-3">
+            <button
+              type="button"
+              onClick={previous}
+              aria-label="Previous career"
+              className="
+                flex
+                size-12
+                cursor-pointer
+                items-center
+                justify-center
+                rounded-full
+                bg-[#dce1e8]
+                text-black
+                transition-all
+                duration-300
+                hover:scale-105
+                hover:bg-white
+              "
+            >
+              <ChevronLeft size={21} />
+            </button>
 
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next career"
-            className="
-              flex
-              size-12
-              cursor-pointer
-              items-center
-              justify-center
-              rounded-full
-              bg-[#dce1e8]
-              text-black
-              transition-all
-              duration-300
-              hover:scale-105
-              hover:bg-white
-            "
-          >
-            <ChevronRight size={21} />
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next career"
+              className="
+                flex
+                size-12
+                cursor-pointer
+                items-center
+                justify-center
+                rounded-full
+                bg-[#dce1e8]
+                text-black
+                transition-all
+                duration-300
+                hover:scale-105
+                hover:bg-white
+              "
+            >
+              <ChevronRight size={21} />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

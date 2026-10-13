@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "maitriglobaleducation.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 };
