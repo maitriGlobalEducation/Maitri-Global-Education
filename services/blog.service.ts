@@ -2,6 +2,7 @@ import "server-only";
 
 import { connectDB } from "@/lib/mongodb";
 import Blog from "@/src/models/Blog";
+import { logTiming } from "@/lib/timing";
 
 export interface PublicBlog {
   _id: string;
@@ -53,13 +54,21 @@ export function getBlogExcerpt(
 }
 
 export async function getPublishedBlogs(): Promise<PublicBlog[]> {
+  const totalStart = Date.now();
+
+  const connectionStart = Date.now();
   await connectDB();
+  logTiming("Published blogs DB connection", connectionStart);
+
+  const queryStart = Date.now();
 
   const blogs = await Blog.find({ status: "published" })
     .sort({ publishedAt: -1, createdAt: -1 })
     .lean();
 
-  return blogs.map((blog) => ({
+  logTiming("Published blogs MongoDB query", queryStart);
+
+  const result = blogs.map((blog) => ({
     _id: String(blog._id),
     title: blog.title,
     slug: blog.slug,
@@ -88,17 +97,30 @@ export async function getPublishedBlogs(): Promise<PublicBlog[]> {
       ? new Date(blog.publishedAt).toISOString()
       : null,
   }));
+
+  logTiming("getPublishedBlogs total", totalStart);
+
+  return result;
 }
 
 export async function getPublicBlogBySlug(
   slug: string,
 ): Promise<PublicBlog | null> {
+  const totalStart = Date.now();
+
+  const connectionStart = Date.now();
   await connectDB();
+  logTiming("Blog DB connection", connectionStart);
+
+  const queryStart = Date.now();
 
   const blog = await Blog.findOne({
     slug: slug.toLowerCase(),
     status: "published",
   }).lean();
+
+  logTiming("Blog MongoDB query", queryStart);
+  logTiming("getPublicBlogBySlug total", totalStart);
 
   if (!blog) return null;
 

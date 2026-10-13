@@ -8,6 +8,7 @@ import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
+import { logTiming } from "@/lib/timing";
 
 interface BlogContentProps {
   content: Record<string, unknown>;
@@ -39,9 +40,12 @@ const PublicImage = Image.extend({
 });
 
 export default function BlogContent({ content }: BlogContentProps) {
-  const html = generateHTML(content as never, [
-    StarterKit,
+  const start = Date.now();
 
+  const html = generateHTML(content as never, [
+    StarterKit.configure({
+      link: false,
+    }),
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
@@ -70,6 +74,8 @@ export default function BlogContent({ content }: BlogContentProps) {
     TableHeader,
     TableCell,
   ]);
+
+  logTiming("Tiptap generateHTML", start);
 
   return (
     <div className="blog-content" dangerouslySetInnerHTML={{ __html: html }} />
