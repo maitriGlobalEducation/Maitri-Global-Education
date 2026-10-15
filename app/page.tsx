@@ -9,7 +9,6 @@ import WhatWeDo, {
 import ScholarshipShowcase from "@/components/Home Page Components/ScholarshipShowcase";
 import UniversityScholarships from "@/components/Home Page Components/UniversityScholarships";
 import EventsEngagement from "@/components/Home Page Components/EventsEngagement";
-import Blogs from "@/components/Home Page Components/Blogs";
 import ServiceProcess from "@/components/Home Page Components/ServiceProcess";
 import Hero from "@/components/Home Page Components/Hero";
 import EliteCareerChoices from "@/components/Home Page Components/EliteCareerChoices";
@@ -18,13 +17,18 @@ import { getUniversities } from "@/services/university.service";
 import { getBlogExcerpt, getPublishedBlogs } from "@/services/blog.service";
 import { HomepageCareerChoicesContent } from "../types/homepage";
 import ExploreBlogs from "@/components/Home Page Components/Blogs";
+import { getPublicTestimonials } from "@/services/testimonial.service";
+import { getPublishedScholarships } from "@/services/public-scholarship.service";
 
 export default async function Home() {
-  const [homepage, universities, publishedBlogs] = await Promise.all([
-    getPublicHomepage(),
-    getUniversities(),
-    getPublishedBlogs(),
-  ]);
+  const [homepage, universities, publishedBlogs, testimonials, scholarships] =
+    await Promise.all([
+      getPublicHomepage(),
+      getUniversities(),
+      getPublishedBlogs(),
+      getPublicTestimonials(),
+      getPublishedScholarships(),
+    ]);
 
   const blogs = publishedBlogs.map((blog) => ({
     _id: blog._id,
@@ -78,8 +82,8 @@ export default async function Home() {
 
       <ServiceProcess />
       <Badge />
-      <ScholarshipShowcase />
-      <Testimonials />
+      <ScholarshipShowcase scholarships={scholarships} />
+      <Testimonials testimonials={testimonials} />
 
       <UniversityScholarships
         universities={universities}
