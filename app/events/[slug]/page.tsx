@@ -29,33 +29,6 @@ export async function generateMetadata({
   };
 }
 
-function formatEventDate(date: string): string {
-  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(date);
-
-  if (match) {
-    const [, year, month, day] = match;
-
-    return new Intl.DateTimeFormat("en-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    }).format(new Date(`${year}-${month}-${day}T00:00:00.000Z`));
-  }
-
-  const parsed = new Date(date);
-
-  if (Number.isNaN(parsed.getTime())) {
-    return "Date to be announced";
-  }
-
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(parsed);
-}
-
 export default async function EventDetailPage({ params }: EventPageProps) {
   const { slug } = await params;
   const event = await getPublishedEventBySlug(slug);

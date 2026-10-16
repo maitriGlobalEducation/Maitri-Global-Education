@@ -3,6 +3,7 @@ import "server-only";
 import { connectDB } from "@/lib/mongodb";
 import Blog from "@/src/models/Blog";
 import { logTiming } from "@/lib/timing";
+import { cache } from "react";
 
 export interface PublicBlog {
   _id: string;
@@ -26,6 +27,56 @@ export interface PublicBlog {
   ctaLink: string;
   featured: boolean;
   publishedAt: string | null;
+}
+
+export interface RecentPublishedBlog {
+  _id: string;
+  title: string;
+  slug: string;
+  category: string;
+  cardImage: {
+    url: string;
+    publicId: string;
+  } | null;
+  publishedAt: string | null;
+}
+
+export async function getRecentPublishedBlogs(
+  currentSlug: string,
+  limit = 5,
+): Promise<RecentPublishedBlog[]> {
+  const connectionStart = Date.now();
+  await connectDB();
+  logTiming("Recent blogs DB connection", connectionStart);
+
+  const queryStart = Date.now();
+
+  const blogs = await Blog.find({
+    status: "published",
+    slug: { $ne: currentSlug.toLowerCase() },
+  })
+    .select("title slug category cardImage publishedAt")
+    .sort({ publishedAt: -1, createdAt: -1 })
+    .limit(limit)
+    .lean();
+
+  logTiming("Recent blogs MongoDB query", queryStart);
+
+  return blogs.map((blog) => ({
+    _id: String(blog._id),
+    title: blog.title,
+    slug: blog.slug,
+    category: blog.category,
+    cardImage: blog.cardImage
+      ? {
+          url: blog.cardImage.url,
+          publicId: blog.cardImage.publicId,
+        }
+      : null,
+    publishedAt: blog.publishedAt
+      ? new Date(blog.publishedAt).toISOString()
+      : null,
+  }));
 }
 
 function extractText(node: unknown): string {
@@ -103,7 +154,7 @@ export async function getPublishedBlogs(): Promise<PublicBlog[]> {
   return result;
 }
 
-export async function getPublicBlogBySlug(
+export async function getPublicBlogBySlugUncached(
   slug: string,
 ): Promise<PublicBlog | null> {
   const totalStart = Date.now();
@@ -154,3 +205,5 @@ export async function getPublicBlogBySlug(
       : null,
   };
 }
+
+export const getPublicBlogBySlug = cache(getPublicBlogBySlugUncached);

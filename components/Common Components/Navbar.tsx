@@ -5,11 +5,11 @@ import Link from "next/link";
 
 const navLinks = [
   { title: "HOME", href: "/" },
-  { title: "EXPLORE", href: "/explore" },
   { title: "SCHOLARSHIPS", href: "/scholarships" },
-  { title: "EVENTS & WEBINARS", href: "/events" },
+  { title: "EVENTS", href: "/events" },
   { title: "BLOGS", href: "/blogs" },
-  { title: "SERVICES", href: "/service" },
+  // { title: "EXPLORE", href: "/explore" },
+  // { title: "SERVICES", href: "/service" },
   // { title: "ELITE CAREER CHOICE", href: "/elite-career" },
   { title: "ABOUT", href: "/about" },
   { title: "CONTACT US", href: "/contact" },

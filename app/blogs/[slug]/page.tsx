@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   getPublicBlogBySlug,
-  getPublishedBlogs,
+  getRecentPublishedBlogs,
 } from "@/services/blog.service";
 import BlogContent from "@/components/Blogs Page Components/BlogContent";
 
@@ -61,16 +61,11 @@ export async function generateMetadata({
 export default async function BlogDetailPage({ params }: BlogPageProps) {
   const { slug } = await params;
 
-  const [blog, allBlogs] = await Promise.all([
-    getPublicBlogBySlug(slug),
-    getPublishedBlogs(),
-  ]);
+  const blog = await getPublicBlogBySlug(slug);
 
   if (!blog) notFound();
 
-  const recentBlogs = allBlogs
-    .filter((item) => item.slug !== blog.slug)
-    .slice(0, 5);
+  const recentBlogs = await getRecentPublishedBlogs(blog.slug, 5);
 
   return (
     <main className="bg-white">
