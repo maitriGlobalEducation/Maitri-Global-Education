@@ -5,6 +5,13 @@ export interface PublicHomepageSection {
   content: Record<string, unknown>;
 }
 
+export interface PublicHomepageSEO {
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords: string[];
+  focusKeyword: string;
+}
+
 export interface PublicHomepage {
   hero: {
     isVisible: boolean;
@@ -27,6 +34,7 @@ export interface PublicHomepage {
     };
   };
   sections: PublicHomepageSection[];
+  seo?: PublicHomepageSEO;
 }
 
 export interface HomepageCareerChoiceCard {

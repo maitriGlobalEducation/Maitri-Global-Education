@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
   revalidateTag("public-homepage-universities", { expire: 0 });
   revalidateTag("public-testimonials", { expire: 0 });
   revalidateTag("public-scholarships", { expire: 0 });
+  revalidateTag("public-homepage-events", { expire: 0 });
 
   return NextResponse.json({ success: true });
 }

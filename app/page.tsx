@@ -8,7 +8,6 @@ import WhatWeDo, {
 } from "@/components/Home Page Components/WhatWeDo";
 import ScholarshipShowcase from "@/components/Home Page Components/ScholarshipShowcase";
 import UniversityScholarships from "@/components/Home Page Components/UniversityScholarships";
-import EventsEngagement from "@/components/Home Page Components/EventsEngagement";
 import ServiceProcess from "@/components/Home Page Components/ServiceProcess";
 import Hero from "@/components/Home Page Components/Hero";
 import EliteCareerChoices from "@/components/Home Page Components/EliteCareerChoices";
@@ -19,16 +18,36 @@ import { HomepageCareerChoicesContent } from "../types/homepage";
 import ExploreBlogs from "@/components/Home Page Components/Blogs";
 import { getPublicTestimonials } from "@/services/testimonial.service";
 import { getPublishedScholarships } from "@/services/public-scholarship.service";
+import { getPublishedEvents } from "@/services/event.service";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const homepage = await getPublicHomepage();
+  const seo = homepage?.seo;
+
+  return {
+    title: seo?.metaTitle || "Maitri Global Education",
+    description: seo?.metaDescription || undefined,
+    keywords: seo?.metaKeywords ?? [],
+  };
+}
 
 export default async function Home() {
-  const [homepage, universities, publishedBlogs, testimonials, scholarships] =
-    await Promise.all([
-      getPublicHomepage(),
-      getUniversities(),
-      getPublishedBlogs(),
-      getPublicTestimonials(),
-      getPublishedScholarships(),
-    ]);
+  const [
+    homepage,
+    universities,
+    publishedBlogs,
+    testimonials,
+    scholarships,
+    events,
+  ] = await Promise.all([
+    getPublicHomepage(),
+    getUniversities(),
+    getPublishedBlogs(),
+    getPublicTestimonials(),
+    getPublishedScholarships(),
+    getPublishedEvents(),
+  ]);
 
   const blogs = publishedBlogs.map((blog) => ({
     _id: blog._id,
@@ -95,7 +114,7 @@ export default async function Home() {
         isVisible={careerChoicesSection ? careerChoicesSection.isVisible : true}
       />
 
-      <EventsEngagement />
+      {/* <EventsEngagement events={events} /> */}
 
       <ExploreBlogs blogs={blogs} />
     </div>

@@ -1,56 +1,70 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 interface EventItem {
-  id: number;
+  _id: string;
   title: string;
-  category: string;
-  image: string;
-  buttonText: string;
-  description?: string;
-  keywords?: string[];
+  slug: string;
+  cardImage?: { url: string } | null;
+  contentImage?: { url: string } | null;
+  content?: unknown;
+  metaDescription?: string;
 }
 
-const events: EventItem[] = [
-  {
-    id: 1,
-    title: "Design",
-    category: "Fashion Design",
-    image: "/Images/Events/design.jpg",
-    buttonText: "Save Your Seat",
-  },
-  {
-    id: 2,
-    title: "Ocean",
-    category: "The Blue Abyss",
-    image: "/Images/Events/ocean.jpg",
-    buttonText: "Register Now",
-    description:
-      "Waves crashing onto the shore bring calmness and inspiration.",
-    keywords: ["Sail Away", "Dive In", "Gallery", "Subscribe"],
-  },
-  {
-    id: 3,
-    title: "Mountains",
-    category: "Where silence speaks",
-    image: "/Images/Events/mountains.jpg",
-    buttonText: "Explore Event",
-    description:
-      "Peaceful view of the mountains with serene skies and fresh air.",
-    keywords: ["Trek Now", "Gallery", "Explore", "Share"],
-  },
-];
+interface EventsEngagementProps {
+  events: EventItem[];
+}
 
-export default function EventsEngagement() {
+function extractText(value: unknown): string {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(extractText).filter(Boolean).join(" ");
+  }
+
+  if (value && typeof value === "object") {
+    const object = value as Record<string, unknown>;
+
+    if (typeof object.text === "string") {
+      return object.text;
+    }
+
+    return Object.values(object).map(extractText).filter(Boolean).join(" ");
+  }
+
+  return "";
+}
+
+function getEventDescription(event: EventItem): string {
+  const description = event.metaDescription?.trim();
+
+  if (description) return description;
+
+  const contentText = extractText(event.content)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return contentText || "Discover more about this event.";
+}
+
+export default function EventsEngagement({ events }: EventsEngagementProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
 
   const getIndex = (offset: number) => {
     return (activeIndex + offset + events.length) % events.length;
   };
+
+  if (events.length === 0) {
+    return null;
+  }
 
   const previousIndex = getIndex(-1);
   const nextIndex = getIndex(1);
@@ -68,7 +82,6 @@ export default function EventsEngagement() {
   return (
     <section className="overflow-hidden bg-[#2b2b2b] py-16 text-white sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        {/* Heading */}
         <h2
           style={{ fontFamily: "Epika" }}
           className="
@@ -86,7 +99,6 @@ export default function EventsEngagement() {
           Events & Engagements
         </h2>
 
-        {/* Carousel */}
         <div className="relative mx-auto h-125 sm:h-145 lg:h-155">
           {events.map((event, index) => {
             const isActive = index === activeIndex;
@@ -99,7 +111,7 @@ export default function EventsEngagement() {
 
             return (
               <EventCard
-                key={event.id}
+                key={event._id}
                 event={event}
                 position={isActive ? "center" : isPrevious ? "left" : "right"}
                 direction={direction}
@@ -108,7 +120,6 @@ export default function EventsEngagement() {
           })}
         </div>
 
-        {/* Controls */}
         <div className="mt-8 flex justify-center gap-3 sm:mt-0">
           <button
             type="button"
@@ -222,6 +233,13 @@ function EventCard({ event, position }: EventCardProps) {
     `,
   };
 
+  const image =
+    event.cardImage?.url ||
+    event.contentImage?.url ||
+    "/Images/Events/work.jpg";
+
+  const description = getEventDescription(event);
+
   return (
     <article
       className={`
@@ -232,7 +250,6 @@ function EventCard({ event, position }: EventCardProps) {
         ${positionClasses[position]}
       `}
     >
-      {/* Image */}
       <div
         className={`
           relative
@@ -246,9 +263,10 @@ function EventCard({ event, position }: EventCardProps) {
         `}
       >
         <Image
-          src={event.image}
+          src={image}
           alt={event.title}
           fill
+          unoptimized
           sizes={
             isCenter
               ? "(max-width: 640px) 76vw, (max-width: 1024px) 66vw, 58vw"
@@ -257,15 +275,12 @@ function EventCard({ event, position }: EventCardProps) {
           className="object-cover"
         />
 
-        {/* Dim side cards */}
         {!isCenter && <div className="absolute inset-0 bg-black/45" />}
 
-        {/* Center subtle gradient */}
         {isCenter && (
           <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-black/40 to-transparent" />
         )}
 
-        {/* CTA - only center */}
         <div
           className={`
             absolute
@@ -276,13 +291,13 @@ function EventCard({ event, position }: EventCardProps) {
             transition-all
             duration-500
 
-            ${
-              isCenter ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
-            }
+            ${isCenter ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}
           `}
         >
-          <button
-            type="button"
+          <Link
+            href={`/events/${event.slug}`}
+            tabIndex={isCenter ? 0 : -1}
+            aria-hidden={!isCenter}
             className="
               rounded-md
               border
@@ -300,105 +315,45 @@ function EventCard({ event, position }: EventCardProps) {
               hover:text-black
             "
           >
-            {event.buttonText}
-          </button>
+            Explore Event
+          </Link>
         </div>
       </div>
 
-      {/* Text */}
-      {/* Content */}
       <div
         className={`
-    px-3 pt-4
-    transition-all
-    duration-700
-    ${isCenter ? "opacity-100" : "opacity-50"}
-  `}
+          px-3 pt-4
+          transition-all
+          duration-700
+          ${isCenter ? "opacity-100" : "opacity-50"}
+        `}
       >
-        {/* Title */}
         <h3
           className={`
-      font-semibold
-      transition-all
-      duration-700
-      ${isCenter ? "text-xl sm:text-2xl" : "text-sm sm:text-base"}
-    `}
+            font-semibold
+            transition-all
+            duration-700
+            ${isCenter ? "text-xl sm:text-2xl" : "text-sm sm:text-base"}
+          `}
         >
           {event.title}
         </h3>
 
-        {/* Category / subtitle */}
         <p
           className={`
-      mt-1
-      transition-all
-      duration-700
-      ${
-        isCenter
-          ? "text-sm text-white/90 sm:text-base"
-          : "text-xs text-white/60"
-      }
-    `}
+            mt-4
+            leading-6
+            transition-all
+            duration-500
+            ${
+              isCenter
+                ? "translate-y-0 text-sm text-white/80 opacity-100"
+                : "pointer-events-none translate-y-2 text-sm opacity-0"
+            }
+          `}
         >
-          {event.category}
+          {description}
         </p>
-
-        {/* Extra description */}
-        {event.description && (
-          <p
-            className={`
-        mt-4
-        leading-6
-        transition-all
-        duration-500
-        ${
-          isCenter
-            ? "translate-y-0 text-sm text-white/80 opacity-100"
-            : "pointer-events-none translate-y-2 opacity-0"
-        }
-      `}
-          >
-            {event.description}
-          </p>
-        )}
-
-        {/* Keywords */}
-        {event.keywords && event.keywords.length > 0 && (
-          <div
-            className={`
-        mt-6
-        flex
-        flex-wrap
-        gap-x-8
-        gap-y-3
-        transition-all
-        duration-500
-        ${
-          isCenter
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-2 opacity-0"
-        }
-      `}
-          >
-            {event.keywords.map((keyword) => (
-              <span
-                key={keyword}
-                className="
-            cursor-pointer
-            text-xs
-            font-medium
-            text-white/90
-            transition-colors
-            duration-200
-            hover:text-[#e8c166]
-            sm:text-sm
-          "
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </article>
   );
