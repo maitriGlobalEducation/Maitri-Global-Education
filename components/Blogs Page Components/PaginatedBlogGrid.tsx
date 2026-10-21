@@ -277,44 +277,30 @@ export default function PaginatedBlogGrid({
         <>
           <nav
             aria-label="Blog pagination"
-            className="mt-12 flex flex-wrap items-center justify-center gap-2"
+            className="mt-12 flex items-center justify-center gap-4"
           >
-            {currentPage > 1 &&
-              pageLink(
-                currentPage - 1,
-                "← Previous",
-                "inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50",
-                "previous",
-              )}
+            <button
+              type="button"
+              onClick={() => void navigateToPage(currentPage - 1)}
+              disabled={currentPage <= 1 || isLoading}
+              className="inline-flex h-10 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              ← Previous
+            </button>
 
-            {Array.from({ length: pageData.totalPages }, (_, index) => {
-              const pageNumber = index + 1;
-              const isCurrentPage = pageNumber === currentPage;
+            <span className="text-sm font-medium text-zinc-600 tabular-nums">
+              {currentPage} / {pageData.totalPages}
+            </span>
 
-              return pageLink(
-                pageNumber,
-                pageNumber,
-                `inline-flex size-10 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
-                  isCurrentPage
-                    ? "border-zinc-950 bg-zinc-950 text-white"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400"
-                }`,
-                pageNumber,
-              );
-            })}
-
-            {currentPage < pageData.totalPages &&
-              pageLink(
-                currentPage + 1,
-                "Next →",
-                "inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50",
-                "next",
-              )}
+            <button
+              type="button"
+              onClick={() => void navigateToPage(currentPage + 1)}
+              disabled={currentPage >= pageData.totalPages || isLoading}
+              className="inline-flex h-10 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next →
+            </button>
           </nav>
-
-          <p className="mt-4 text-center text-xs text-zinc-500">
-            Page {currentPage} of {pageData.totalPages}
-          </p>
         </>
       )}
     </>
