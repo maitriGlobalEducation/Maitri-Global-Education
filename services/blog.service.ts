@@ -29,6 +29,20 @@ export interface PublicBlog {
   publishedAt: string | null;
 }
 
+export interface PublicBlogCard {
+  _id: string;
+  title: string;
+  slug: string;
+  category: string;
+  cardImage: {
+    url: string;
+    publicId: string;
+  } | null;
+  metaDescription: string;
+  featured: boolean;
+  publishedAt: string | null;
+}
+
 export interface RecentPublishedBlog {
   _id: string;
   title: string;
@@ -152,6 +166,105 @@ export async function getPublishedBlogs(): Promise<PublicBlog[]> {
   logTiming("getPublishedBlogs total", totalStart);
 
   return result;
+}
+
+const BLOG_CARD_FIELDS =
+  "title slug category cardImage metaDescription featured publishedAt createdAt";
+
+function toPublicBlogCard(blog: {
+  _id: unknown;
+  title: string;
+  slug: string;
+  category: string;
+  cardImage?: { url: string; publicId: string } | null;
+  metaDescription?: string;
+  featured?: boolean;
+  publishedAt?: Date | string | null;
+}): PublicBlogCard {
+  return {
+    _id: String(blog._id),
+    title: blog.title,
+    slug: blog.slug,
+    category: blog.category,
+    cardImage: blog.cardImage
+      ? {
+          url: blog.cardImage.url,
+          publicId: blog.cardImage.publicId,
+        }
+      : null,
+    metaDescription: blog.metaDescription ?? "",
+    featured: blog.featured ?? false,
+    publishedAt: blog.publishedAt
+      ? new Date(blog.publishedAt).toISOString()
+      : null,
+  };
+}
+
+export async function getFeaturedBlogCard(): Promise<PublicBlogCard | null> {
+  await connectDB();
+
+  const blog = await Blog.findOne({
+    status: "published",
+    featured: true,
+  })
+    .select(BLOG_CARD_FIELDS)
+    .sort({ publishedAt: -1, createdAt: -1 })
+    .lean();
+
+  return blog ? toPublicBlogCard(blog) : null;
+}
+
+export async function getPublishedBlogCards(
+  limit: number,
+  excludeSlugs: string[] = [],
+): Promise<PublicBlogCard[]> {
+  await connectDB();
+
+  const blogs = await Blog.find({
+    status: "published",
+    ...(excludeSlugs.length > 0 ? { slug: { $nin: excludeSlugs } } : {}),
+  })
+    .select(BLOG_CARD_FIELDS)
+    .sort({ publishedAt: -1, createdAt: -1 })
+    .limit(limit)
+    .lean();
+
+  return blogs.map((blog) => toPublicBlogCard(blog));
+}
+
+export async function getPaginatedBlogCards({
+  page,
+  pageSize,
+  excludeSlugs = [],
+}: {
+  page: number;
+  pageSize: number;
+  excludeSlugs?: string[];
+}): Promise<{
+  blogs: PublicBlogCard[];
+  total: number;
+}> {
+  await connectDB();
+
+  const filter = {
+    status: "published",
+    ...(excludeSlugs.length > 0 ? { slug: { $nin: excludeSlugs } } : {}),
+  };
+
+  const [blogs, total] = await Promise.all([
+    Blog.find(filter)
+      .select(BLOG_CARD_FIELDS)
+      .sort({ publishedAt: -1, createdAt: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .lean(),
+    Blog.countDocuments(filter),
+  ]);
+
+  return {
+    blogs: blogs.map((blog) => toPublicBlogCard(blog)),
+    total,
+  };
 }
 
 export async function getPublicBlogBySlugUncached(

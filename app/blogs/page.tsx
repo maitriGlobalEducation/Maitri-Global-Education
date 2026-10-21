@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { getPublishedBlogs, type PublicBlog } from "@/services/blog.service";
+import {
+  getFeaturedBlogCard,
+  getPublishedBlogCards,
+  getPaginatedBlogCards,
+  type PublicBlogCard,
+} from "@/services/blog.service";
 
 interface BlogsPageProps {
   searchParams: Promise<{ page?: string }>;
@@ -22,7 +27,7 @@ function BlogImage({
   blog,
   priority = false,
 }: {
-  blog: PublicBlog;
+  blog: PublicBlogCard;
   priority?: boolean;
 }) {
   return blog.cardImage?.url ? (
@@ -45,7 +50,7 @@ function OverlayBlogCard({
   variant = "small",
   priority = false,
 }: {
-  blog: PublicBlog;
+  blog: PublicBlogCard;
   variant?: "featured" | "wide" | "small";
   priority?: boolean;
 }) {
@@ -131,7 +136,7 @@ function OverlayBlogCard({
   );
 }
 
-function StandardBlogCard({ blog }: { blog: PublicBlog }) {
+function StandardBlogCard({ blog }: { blog: PublicBlogCard }) {
   return (
     <Link
       href={`/blogs/${blog.slug}`}
@@ -139,10 +144,8 @@ function StandardBlogCard({ blog }: { blog: PublicBlog }) {
     >
       <BlogImage blog={blog} />
 
-      {/* Dark gradient overlay */}
       <div className="absolute inset-0 z-0 bg-linear-to-t from-black via-black/45 to-black/5 transition-opacity duration-300 group-hover:from-black/95" />
 
-      {/* Text displayed over the image */}
       <div className="relative z-10 mt-auto flex w-full flex-col p-5 sm:p-6">
         <span className="mb-3 w-fit max-w-full truncate rounded-md bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
           {blog.category}
@@ -155,20 +158,8 @@ function StandardBlogCard({ blog }: { blog: PublicBlog }) {
           {blog.title}
         </h3>
 
-        {/* {blog.metaDescription && (
-          <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/80">
-            {blog.metaDescription}
-          </p>
-        )} */}
-
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/80 sm:text-sm">
-          {/* <span>By Maitri Global Education</span> */}
-
-          {blog.publishedAt && (
-            <>
-              <span>{formatDate(blog.publishedAt)}</span>
-            </>
-          )}
+          {blog.publishedAt && <span>{formatDate(blog.publishedAt)}</span>}
         </div>
 
         <span className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-white">
@@ -183,24 +174,48 @@ function StandardBlogCard({ blog }: { blog: PublicBlog }) {
 }
 
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
-  const [blogs, query] = await Promise.all([getPublishedBlogs(), searchParams]);
+  const [featuredBlog, query] = await Promise.all([
+    getFeaturedBlogCard(),
+    searchParams,
+  ]);
 
-  const featuredBlog = blogs.find((blog) => blog.featured);
-  const remainingBlogs = blogs.filter((blog) => blog._id !== featuredBlog?._id);
-
-  // The first three non-featured blogs appear in the editorial layout.
-  const secondaryBlogs = featuredBlog ? remainingBlogs.slice(0, 3) : [];
-  const gridBlogs = featuredBlog ? remainingBlogs.slice(3) : remainingBlogs;
-
-  const totalPages = Math.ceil(gridBlogs.length / PAGE_SIZE);
   const requestedPage = Number(query.page ?? "1");
+  const page = Number.isInteger(requestedPage) ? Math.max(1, requestedPage) : 1;
 
-  const currentPage = Number.isInteger(requestedPage)
-    ? Math.min(Math.max(requestedPage, 1), Math.max(totalPages, 1))
-    : 1;
+  // Fetch only three cards for the secondary featured section.
+  const secondaryBlogs = featuredBlog
+    ? await getPublishedBlogCards(3, [featuredBlog.slug])
+    : [];
 
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const paginatedBlogs = gridBlogs.slice(startIndex, startIndex + PAGE_SIZE);
+  // Keep featured-section blogs out of the paginated results.
+  const excludedSlugs = [
+    ...(featuredBlog ? [featuredBlog.slug] : []),
+    ...secondaryBlogs.map((blog) => blog.slug),
+  ];
+
+  let { blogs: paginatedBlogs, total: gridBlogsCount } =
+    await getPaginatedBlogCards({
+      page,
+      pageSize: PAGE_SIZE,
+      excludeSlugs: excludedSlugs,
+    });
+
+  const totalPages = Math.ceil(gridBlogsCount / PAGE_SIZE);
+  const currentPage = Math.min(page, Math.max(totalPages, 1));
+
+  // Handle invalid page URLs by showing the last valid page.
+  if (currentPage !== page) {
+    const result = await getPaginatedBlogCards({
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      excludeSlugs: excludedSlugs,
+    });
+
+    paginatedBlogs = result.blogs;
+  }
+
+  const hasAnyBlogs =
+    Boolean(featuredBlog) || secondaryBlogs.length > 0 || gridBlogsCount > 0;
 
   return (
     <main className="bg-[#fafafa] py-10 sm:py-14 lg:py-18">
@@ -223,7 +238,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
           </p>
         </header>
 
-        {/* Editorial featured layout */}
+        {/* Featured editorial layout */}
         {featuredBlog && (
           <section
             aria-label="Featured and latest stories"
@@ -237,7 +252,6 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
-              {/* Largest card */}
               <div className="min-w-0 lg:row-span-2">
                 <OverlayBlogCard
                   blog={featuredBlog}
@@ -246,12 +260,10 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
                 />
               </div>
 
-              {/* Second-largest card */}
               {secondaryBlogs[0] && (
                 <OverlayBlogCard blog={secondaryBlogs[0]} variant="wide" />
               )}
 
-              {/* Two smaller cards */}
               {secondaryBlogs.length > 1 && (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
                   {secondaryBlogs.slice(1, 3).map((blog) => (
@@ -284,8 +296,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
             </div>
 
             <p className="text-sm text-zinc-500">
-              {gridBlogs.length}{" "}
-              {gridBlogs.length === 1 ? "article" : "articles"}
+              {gridBlogsCount} {gridBlogsCount === 1 ? "article" : "articles"}
             </p>
           </div>
 
@@ -297,7 +308,6 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
                 ))}
               </div>
 
-              {/* URL-based pagination */}
               {totalPages > 1 && (
                 <nav
                   aria-label="Blog pagination"
@@ -313,13 +323,13 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
                   )}
 
                   {Array.from({ length: totalPages }, (_, index) => {
-                    const page = index + 1;
-                    const isCurrentPage = page === currentPage;
+                    const pageNumber = index + 1;
+                    const isCurrentPage = pageNumber === currentPage;
 
                     return (
                       <Link
-                        key={page}
-                        href={`/blogs?page=${page}#all-blogs`}
+                        key={pageNumber}
+                        href={`/blogs?page=${pageNumber}#all-blogs`}
                         aria-current={isCurrentPage ? "page" : undefined}
                         className={`inline-flex size-10 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
                           isCurrentPage
@@ -327,7 +337,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
                             : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400"
                         }`}
                       >
-                        {page}
+                        {pageNumber}
                       </Link>
                     );
                   })}
@@ -351,9 +361,9 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
             </>
           ) : (
             <p className="py-12 text-sm text-zinc-500">
-              {blogs.length === 0
-                ? "No published blogs available yet."
-                : "You've reached the end of our articles."}
+              {hasAnyBlogs
+                ? "You've reached the end of our articles."
+                : "No published blogs available yet."}
             </p>
           )}
         </section>
