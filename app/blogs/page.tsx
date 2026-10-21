@@ -174,18 +174,28 @@ function StandardBlogCard({ blog }: { blog: PublicBlogCard }) {
 }
 
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
+  const pageStart = Date.now();
+
   const [featuredBlog, query] = await Promise.all([
     getFeaturedBlogCard(),
     searchParams,
   ]);
 
+  console.log(`[TIMING] Featured blog query: ${Date.now() - pageStart}ms`);
+
   const requestedPage = Number(query.page ?? "1");
   const page = Number.isInteger(requestedPage) ? Math.max(1, requestedPage) : 1;
+
+  const secondaryStart = Date.now();
 
   // Fetch only three cards for the secondary featured section.
   const secondaryBlogs = featuredBlog
     ? await getPublishedBlogCards(3, [featuredBlog.slug])
     : [];
+
+  console.log(
+    `[TIMING] Secondary blogs ready: ${Date.now() - secondaryStart}ms`,
+  );
 
   // Keep featured-section blogs out of the paginated results.
   const excludedSlugs = [
@@ -193,12 +203,18 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
     ...secondaryBlogs.map((blog) => blog.slug),
   ];
 
+  const paginationStart = Date.now();
+
   let { blogs: paginatedBlogs, total: gridBlogsCount } =
     await getPaginatedBlogCards({
       page,
       pageSize: PAGE_SIZE,
       excludeSlugs: excludedSlugs,
     });
+
+  console.log(
+    `[TIMING] Pagination data ready: ${Date.now() - paginationStart}ms`,
+  );
 
   const totalPages = Math.ceil(gridBlogsCount / PAGE_SIZE);
   const currentPage = Math.min(page, Math.max(totalPages, 1));
@@ -214,8 +230,12 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
     paginatedBlogs = result.blogs;
   }
 
+  console.log(`[TIMING] Total page data ready: ${Date.now() - pageStart}ms`);
+
   const hasAnyBlogs =
     Boolean(featuredBlog) || secondaryBlogs.length > 0 || gridBlogsCount > 0;
+
+  console.log(`[TIMING] Blogs page data ready: ${Date.now() - pageStart}ms`);
 
   return (
     <main className="bg-[#fafafa] py-10 sm:py-14 lg:py-18">
