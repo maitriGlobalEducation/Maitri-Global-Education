@@ -240,29 +240,35 @@ export async function getPaginatedBlogCards({
   page: number;
   pageSize: number;
   excludeSlugs?: string[];
-}): Promise<{
-  blogs: PublicBlogCard[];
-  total: number;
-}> {
+}): Promise<{ blogs: PublicBlogCard[]; total: number }> {
+  const connectionStart = Date.now();
   await connectDB();
+  logTiming("Blog pagination DB connection", connectionStart);
 
   const filter = {
     status: "published",
-    ...(excludeSlugs.length > 0 ? { slug: { $nin: excludeSlugs } } : {}),
+    ...(excludeSlugs.length ? { slug: { $nin: excludeSlugs } } : {}),
   };
+
+  const queryStart = Date.now();
 
   const [blogs, total] = await Promise.all([
     Blog.find(filter)
-      .select(BLOG_CARD_FIELDS)
+      .select(
+        "title slug category cardImage metaDescription featured publishedAt createdAt",
+      )
       .sort({ publishedAt: -1, createdAt: -1 })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean(),
+
     Blog.countDocuments(filter),
   ]);
 
+  logTiming("Blog pagination query + count", queryStart);
+
   return {
-    blogs: blogs.map((blog) => toPublicBlogCard(blog)),
+    blogs: blogs.map(toPublicBlogCard),
     total,
   };
 }
