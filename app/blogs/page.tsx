@@ -323,13 +323,11 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
 
           {paginatedBlogs.length > 0 ? (
             <PaginatedBlogGrid
-              currentPage={currentPage}
-              totalPages={totalPages}
-            >
-              {paginatedBlogs.map((blog) => (
-                <StandardBlogCard key={blog._id} blog={blog} />
-              ))}
-            </PaginatedBlogGrid>
+              initialBlogs={paginatedBlogs}
+              initialPage={currentPage}
+              initialTotalPages={totalPages}
+              initialTotal={gridBlogsCount}
+            />
           ) : (
             <p className="py-12 text-sm text-zinc-500">
               {hasAnyBlogs
