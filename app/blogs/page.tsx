@@ -5,6 +5,7 @@ import {
   getPaginatedBlogCards,
   type PublicBlogCard,
 } from "@/services/blog.service";
+import PaginatedBlogGrid from "@/components/Blogs Page Components/PaginatedBlogGrid";
 
 interface BlogsPageProps {
   searchParams: Promise<{ page?: string }>;
@@ -321,64 +322,14 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
           </div>
 
           {paginatedBlogs.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
-                {paginatedBlogs.map((blog) => (
-                  <StandardBlogCard key={blog._id} blog={blog} />
-                ))}
-              </div>
-
-              {totalPages > 1 && (
-                <nav
-                  aria-label="Blog pagination"
-                  className="mt-12 flex flex-wrap items-center justify-center gap-2"
-                >
-                  {currentPage > 1 && (
-                    <Link
-                      href={`/blogs?page=${currentPage - 1}#all-blogs`}
-                      className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50"
-                    >
-                      ← Previous
-                    </Link>
-                  )}
-
-                  {Array.from({ length: totalPages }, (_, index) => {
-                    const pageNumber = index + 1;
-                    const isCurrentPage = pageNumber === currentPage;
-
-                    return (
-                      <Link
-                        key={pageNumber}
-                        href={`/blogs?page=${pageNumber}#all-blogs`}
-                        aria-current={isCurrentPage ? "page" : undefined}
-                        className={`inline-flex size-10 items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
-                          isCurrentPage
-                            ? "border-zinc-950 bg-zinc-950 text-white"
-                            : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400"
-                        }`}
-                      >
-                        {pageNumber}
-                      </Link>
-                    );
-                  })}
-
-                  {currentPage < totalPages && (
-                    <Link
-                      href={`/blogs?page=${currentPage + 1}#all-blogs`}
-                      className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:bg-zinc-50"
-                    >
-                      Next →
-                    </Link>
-                  )}
-                </nav>
-              )}
-
-              {totalPages > 1 && (
-                <p className="mt-4 text-center text-xs text-zinc-500">
-                  Page {currentPage} of {totalPages}
-                </p>
-              )}
-            </>
+            <PaginatedBlogGrid
+              currentPage={currentPage}
+              totalPages={totalPages}
+            >
+              {paginatedBlogs.map((blog) => (
+                <StandardBlogCard key={blog._id} blog={blog} />
+              ))}
+            </PaginatedBlogGrid>
           ) : (
             <p className="py-12 text-sm text-zinc-500">
               {hasAnyBlogs
