@@ -137,43 +137,6 @@ function OverlayBlogCard({
   );
 }
 
-function StandardBlogCard({ blog }: { blog: PublicBlogCard }) {
-  return (
-    <Link
-      href={`/blogs/${blog.slug}`}
-      className="group relative isolate flex min-w-0 min-h-75 overflow-hidden rounded-xl bg-zinc-900 text-white sm:min-h-80"
-    >
-      <BlogImage blog={blog} />
-
-      <div className="absolute inset-0 z-0 bg-linear-to-t from-black via-black/45 to-black/5 transition-opacity duration-300 group-hover:from-black/95" />
-
-      <div className="relative z-10 mt-auto flex w-full flex-col p-5 sm:p-6">
-        <span className="mb-3 w-fit max-w-full truncate rounded-md bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
-          {blog.category}
-        </span>
-
-        <h3
-          style={{ fontFamily: "Epika" }}
-          className="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-orange-100 sm:text-2xl"
-        >
-          {blog.title}
-        </h3>
-
-        <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/80 sm:text-sm">
-          {blog.publishedAt && <span>{formatDate(blog.publishedAt)}</span>}
-        </div>
-
-        <span className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-white">
-          Read article
-          <span className="transition-transform group-hover:translate-x-1">
-            →
-          </span>
-        </span>
-      </div>
-    </Link>
-  );
-}
-
 export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const pageStart = Date.now();
 

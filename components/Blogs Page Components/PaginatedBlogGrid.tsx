@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { PublicBlogCard } from "@/services/blog.service";
 import BlogGridSkeleton from "./BlogGridSkeleton";
@@ -138,13 +132,45 @@ export default function PaginatedBlogGrid({
     }
   }, []);
 
-  // Prefetch the next page in the background.
-  useEffect(() => {
-    if (currentPage >= pageData.totalPages) return;
+  const [isNextPageReady, setIsNextPageReady] = useState(
+    initialPage >= initialTotalPages,
+  );
 
-    void getPageData(currentPage + 1).catch(() => {
-      // A failed prefetch should not interrupt the current page.
-    });
+  useEffect(() => {
+    let cancelled = false;
+
+    async function prefetchNextPage() {
+      const nextPage = currentPage + 1;
+
+      if (nextPage > pageData.totalPages) {
+        setIsNextPageReady(true);
+        return;
+      }
+
+      // The next page is already cached.
+      if (cacheRef.current.has(nextPage)) {
+        setIsNextPageReady(true);
+        return;
+      }
+
+      setIsNextPageReady(false);
+
+      try {
+        await getPageData(nextPage);
+      } catch {
+        // Let the user retry through normal navigation.
+      } finally {
+        if (!cancelled) {
+          setIsNextPageReady(true);
+        }
+      }
+    }
+
+    void prefetchNextPage();
+
+    return () => {
+      cancelled = true;
+    };
   }, [currentPage, pageData.totalPages, getPageData]);
 
   const navigateToPage = useCallback(
@@ -230,29 +256,6 @@ export default function PaginatedBlogGrid({
     };
   }, [navigateToPage]);
 
-  function pageLink(
-    targetPage: number,
-    label: ReactNode,
-    className: string,
-    key: string | number,
-  ) {
-    return (
-      <Link
-        key={key}
-        href={`/blogs?page=${targetPage}#all-blogs`}
-        scroll={false}
-        aria-disabled={isLoading}
-        onClick={(event) => {
-          event.preventDefault();
-          void navigateToPage(targetPage);
-        }}
-        className={`${className} ${isLoading ? "cursor-wait" : ""}`}
-      >
-        {label}
-      </Link>
-    );
-  }
-
   return (
     <>
       <div aria-busy={isLoading}>
@@ -295,7 +298,11 @@ export default function PaginatedBlogGrid({
             <button
               type="button"
               onClick={() => void navigateToPage(currentPage + 1)}
-              disabled={currentPage >= pageData.totalPages || isLoading}
+              disabled={
+                currentPage >= pageData.totalPages ||
+                isLoading ||
+                !isNextPageReady
+              }
               className="inline-flex h-10 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next →
