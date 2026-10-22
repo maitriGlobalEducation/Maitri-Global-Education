@@ -6,6 +6,7 @@ import {
   type PublicBlogCard,
 } from "@/services/blog.service";
 import PaginatedBlogGrid from "@/components/Blogs Page Components/PaginatedBlogGrid";
+import RevealFromSide from "@/components/Blogs Page Components/RevealFromSide";
 
 interface BlogsPageProps {
   searchParams: Promise<{ page?: string }>;
@@ -74,7 +75,7 @@ function OverlayBlogCard({
       <div className="absolute inset-0 z-0 bg-linear-to-t from-black via-black/45 to-black/5 transition-opacity duration-300 group-hover:from-black/95" />
 
       {blog.featured && (
-        <span className="absolute right-0 top-0 z-10 flex size-11 items-center justify-center rounded-bl-2xl bg-amber-600 text-white">
+        <span className="absolute right-0 top-0 z-10 flex size-11 items-center justify-center rounded-bl-2xl bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22] text-black">
           <span aria-label="Featured article" title="Featured article">
             ★
           </span>
@@ -90,7 +91,7 @@ function OverlayBlogCard({
               : "p-4 sm:p-5"
         }`}
       >
-        <span className="mb-3 w-fit max-w-full truncate rounded-md bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+        <span className="mb-3 w-fit max-w-full truncate rounded-md bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22] px-3 py-1 text-xs font-semibold text-black">
           {blog.category}
         </span>
 
@@ -202,7 +203,10 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   console.log(`[TIMING] Blogs page data ready: ${Date.now() - pageStart}ms`);
 
   return (
-    <main className="bg-[#fafafa] py-10 sm:py-14 lg:py-18">
+    <main
+      data-navbar-theme="light"
+      className="bg-[#fafafa] py-10 sm:py-14 lg:py-30"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <header className="mb-9 max-w-3xl sm:mb-12 lg:mb-14">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
@@ -236,26 +240,41 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
-              <div className="min-w-0 lg:row-span-2">
+              {/* Featured blog: left to right */}
+              <RevealFromSide
+                direction="left"
+                className="min-w-0 lg:row-span-2"
+              >
                 <OverlayBlogCard
                   blog={featuredBlog}
                   variant="featured"
                   priority
                 />
-              </div>
+              </RevealFromSide>
 
+              {/* First supporting blog: right to left */}
               {secondaryBlogs[0] && (
-                <OverlayBlogCard blog={secondaryBlogs[0]} variant="wide" />
+                <RevealFromSide
+                  direction="right"
+                  delay={0.15}
+                  className="min-w-0"
+                >
+                  <OverlayBlogCard blog={secondaryBlogs[0]} variant="wide" />
+                </RevealFromSide>
               )}
 
+              {/* Remaining two supporting blogs: staggered right to left */}
               {secondaryBlogs.length > 1 && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-                  {secondaryBlogs.slice(1, 3).map((blog) => (
-                    <OverlayBlogCard
+                <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+                  {secondaryBlogs.slice(1, 3).map((blog, index) => (
+                    <RevealFromSide
                       key={blog._id}
-                      blog={blog}
-                      variant="small"
-                    />
+                      direction="right"
+                      delay={0.3 + index * 0.18}
+                      className="min-w-0"
+                    >
+                      <OverlayBlogCard blog={blog} variant="small" />
+                    </RevealFromSide>
                   ))}
                 </div>
               )}

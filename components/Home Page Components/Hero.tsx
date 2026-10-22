@@ -27,7 +27,10 @@ export default function Hero({ hero }: HeroProps) {
   if (!hero.isVisible) return null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div
+      data-navbar-theme="dark"
+      className="relative w-full h-screen overflow-hidden"
+    >
       <video
         autoPlay
         loop

@@ -38,13 +38,13 @@ export default async function EventDetailPage({ params }: EventPageProps) {
   const image = event.contentImage?.url || event.cardImage?.url;
 
   return (
-    <main className="bg-zinc-50">
-      <div className="mx-auto max-w-screen-2xl px-4 py-8 sm:px-6 md:py-12 lg:px-10 xl:px-12 2xl:px-16">
+    <main data-navbar-theme="light" className="bg-zinc-50">
+      <div className="mx-auto max-w-screen-2xl px-4 pt-24 pb-8 sm:px-6 sm:pt-28 sm:pb-12 md:pb-12 lg:px-10 lg:pt-32 xl:px-12 2xl:px-16">
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(400px,1fr)] xl:gap-10 2xl:gap-12">
           <div className="min-w-0">
             <Link
               href="/events"
-              className="mb-4 inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+              className="mb-6 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
             >
               <span aria-hidden="true">←</span>
               Back to Events
@@ -91,7 +91,7 @@ export default async function EventDetailPage({ params }: EventPageProps) {
             </article>
           </div>
 
-          <aside className="min-w-0 lg:sticky lg:top-8">
+          <aside className="min-w-0 pt-4 lg:sticky lg:top-28 lg:self-start lg:pt-0">
             <EventRegistrationForm
               fields={event.registrationForm?.fields ?? []}
               eventTitle={event.title}

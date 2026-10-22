@@ -103,7 +103,7 @@ export default function Footer() {
 
             <div className="mt-6">
               <div className="flex items-center gap-3">
-                <Phone size={19} strokeWidth={1.7} className="text-[#ff5a24]" />
+                <Phone size={19} strokeWidth={1.7} className="text-[#d89b30]" />
 
                 <span className="font-bold text-white">Phone:</span>
               </div>
@@ -160,13 +160,14 @@ export default function Footer() {
             <button
               type="submit"
               aria-label="Subscribe"
+              disabled
               className="
                 flex w-12 shrink-0 items-center
-                justify-center bg-[#ff6547]
-                transition hover:bg-[#f4512c]
+                justify-center bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22]
+                transition
               "
             >
-              <Send size={17} />
+              <Send size={17} color="#000000" />
             </button>
           </form>
 
@@ -197,7 +198,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="bg-[#ff5a24]">
+      <div className="bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22]">
         <div
           className="
             mx-auto flex max-w-330
@@ -209,6 +210,8 @@ export default function Footer() {
             lg:justify-between
             lg:px-8 lg:py-4
             lg:text-sm
+            text-black
+            font-medium
           "
         >
           <p>
@@ -253,7 +256,7 @@ function FooterHeading({ children }: { children: React.ReactNode }) {
     <div>
       <h3 className="text-base font-bold text-white">{children}</h3>
 
-      <div className="mt-2 h-1 w-7 rounded-full bg-[#ff5a24]" />
+      <div className="mt-2 h-1 w-7 rounded-full bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22]" />
     </div>
   );
 }
@@ -280,7 +283,7 @@ function FooterLinks({
               className="
                 text-sm leading-5 text-[#d0cbd0]
                 transition-colors
-                hover:text-[#ff5a24]
+                hover:text-[#d8a03f]
               "
             >
               {link.label}

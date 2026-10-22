@@ -68,11 +68,11 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
   const recentBlogs = await getRecentPublishedBlogs(blog.slug, 5);
 
   return (
-    <main className="bg-white">
-      <div className="mx-auto w-full max-w-375 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-16 xl:px-16">
+    <main data-navbar-theme="light" className="bg-white">
+      <div className="mx-auto w-full max-w-375 px-4 pt-24 pb-8 sm:px-8 sm:pt-28 sm:pb-12 lg:px-12 lg:pt-32 xl:px-16">
         <Link
           href="/blogs"
-          className="mb-4 inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+          className="mb-4 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
         >
           <span aria-hidden="true">←</span>
           Back to blogs
@@ -130,7 +130,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
           </article>
 
           {/* Recent blogs sidebar */}
-          <aside className="min-w-0 border-t border-zinc-200 pt-8 lg:sticky lg:top-8 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0 xl:pl-8">
+          <aside className="min-w-0 border-t border-zinc-200 pt-8 lg:sticky lg:top-28 lg:self-start lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0 xl:pl-8">
             <div className="flex items-center justify-between gap-3">
               <h2
                 style={{ fontFamily: "Epika" }}

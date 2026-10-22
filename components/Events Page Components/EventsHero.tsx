@@ -1,6 +1,7 @@
 export default function EventsHero() {
   return (
     <section
+      data-navbar-theme="dark"
       style={{
         backgroundImage: "url('/Images/Events/EventsPageHero.jpg')",
       }}

@@ -31,7 +31,7 @@ function HeroTitle({ heading, subtitle, cta1, cta2 }: HeroTitleProps) {
           {subtitle}
         </h2>
 
-        <div className="flex flex-row gap-5 mt-2">
+        <div className="mt-2 flex w-fit flex-col items-center gap-3 min-[400px]:flex-row min-[400px]:gap-5">
           {cta1.enabled && cta1.label && cta1.url && (
             <Button text={cta1.label} to={cta1.url} />
           )}

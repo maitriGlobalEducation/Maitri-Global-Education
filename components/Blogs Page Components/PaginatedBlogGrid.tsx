@@ -50,7 +50,7 @@ function StandardBlogCard({ blog }: { blog: PublicBlogCard }) {
       <div className="absolute inset-0 z-0 bg-linear-to-t from-black via-black/45 to-black/5 transition-opacity duration-300 group-hover:from-black/95" />
 
       <div className="relative z-10 mt-auto flex w-full flex-col p-5 sm:p-6">
-        <span className="mb-3 w-fit max-w-full truncate rounded-md bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+        <span className="mb-3 w-fit max-w-full truncate rounded-md bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22] px-3 py-1 text-xs font-semibold text-black">
           {blog.category}
         </span>
 

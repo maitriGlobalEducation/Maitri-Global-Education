@@ -3,7 +3,10 @@ import WhyMaitri from "./WhyMaitri";
 
 export default function AboutPage() {
   return (
-    <section className="bg-white py-14 sm:py-18 lg:py-22">
+    <section
+      data-navbar-theme="light"
+      className="bg-white py-14 sm:py-18 lg:py-40"
+    >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         {/* Heading */}
         <div className="text-center">
