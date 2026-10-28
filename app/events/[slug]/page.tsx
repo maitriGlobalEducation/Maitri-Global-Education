@@ -93,8 +93,9 @@ export default async function EventDetailPage({ params }: EventPageProps) {
 
           <aside className="min-w-0 pt-4 lg:sticky lg:top-28 lg:self-start lg:pt-0">
             <EventRegistrationForm
-              fields={event.registrationForm?.fields ?? []}
+              eventId={String(event._id)}
               eventTitle={event.title}
+              fields={event.registrationForm?.fields ?? []}
             />
           </aside>
         </div>

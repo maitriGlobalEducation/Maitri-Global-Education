@@ -21,6 +21,18 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@layer utilities {
+  .bg-gold-gradient {
+    @apply bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22];
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    @apply bg-linear-to-r from-[#8A6420] via-[#E8C96A] to-[#A77B22] bg-clip-text text-transparent;
+  }
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

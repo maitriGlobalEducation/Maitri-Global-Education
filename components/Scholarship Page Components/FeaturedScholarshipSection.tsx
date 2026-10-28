@@ -8,12 +8,32 @@ interface FeaturedScholarshipSectionProps {
   scholarship: Scholarship;
 }
 
+const countryOptions = [
+  "India",
+  "United States",
+  "United Kingdom",
+  "Canada",
+  "Australia",
+  "New Zealand",
+  "United Arab Emirates",
+  "Germany",
+  "France",
+  "Italy",
+  "Ireland",
+  "Singapore",
+  "Other",
+];
+
 export default function FeaturedScholarshipSection({
   scholarship,
 }: FeaturedScholarshipSectionProps) {
   const [formValues, setFormValues] = useState<
     Record<string, string | boolean>
   >({});
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const shouldReduceMotion = useReducedMotion();
 
@@ -70,10 +90,55 @@ export default function FeaturedScholarshipSection({
     scholarship.cardImage?.url ??
     scholarship.logo?.url;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Connect this to your scholarship application API when ready.
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitted(false);
+    setError("");
+
+    try {
+      const response = await fetch(
+        "/api/scholarship/scholarship-applications",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            scholarshipId: scholarship._id,
+            fields: formValues,
+          }),
+        },
+      );
+
+      const contentType = response.headers.get("content-type");
+
+      if (!contentType?.includes("application/json")) {
+        throw new Error(
+          `Unexpected server response (${response.status}). Please try again.`,
+        );
+      }
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message ?? "Unable to submit your application.");
+      }
+
+      setSubmitted(true);
+      setFormValues({});
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -211,7 +276,7 @@ export default function FeaturedScholarshipSection({
                         <option value="">
                           Select {field.label.toLowerCase()}
                         </option>
-                        {(field.options ?? []).map((option) => (
+                        {countryOptions.map((option) => (
                           <option key={option} value={option}>
                             {option}
                           </option>
@@ -250,11 +315,31 @@ export default function FeaturedScholarshipSection({
                 );
               })}
 
+              {error && (
+                <p
+                  role="alert"
+                  className="rounded-lg border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+                >
+                  {error}
+                </p>
+              )}
+
+              {submitted && (
+                <p
+                  role="status"
+                  className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200"
+                >
+                  Your application for {scholarship.title} has been submitted
+                  successfully!
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="mt-4 w-full cursor-pointer rounded-full bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-[#344563] transition hover:bg-white"
+                disabled={isSubmitting}
+                className="mt-4 w-full cursor-pointer rounded-full bg-linear-to-r from-[#8A6420] via-[#FFF0A3] to-[#A77B22] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-[#344563] transition hover:brightness-105 disabled:cursor-wait disabled:opacity-60"
               >
-                Submit application
+                {isSubmitting ? "Submitting..." : "Submit application"}
               </button>
 
               <p className="text-xs leading-5 text-white/55">

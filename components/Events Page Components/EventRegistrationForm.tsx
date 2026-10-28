@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 interface EventRegistrationField {
   key: string;
@@ -12,6 +12,7 @@ interface EventRegistrationField {
 
 interface EventRegistrationFormProps {
   fields: EventRegistrationField[];
+  eventId: string;
   eventTitle: string;
 }
 
@@ -35,30 +36,64 @@ const countryOptions = [
 
 export default function EventRegistrationForm({
   fields,
+  eventId,
   eventTitle,
 }: EventRegistrationFormProps) {
   const [values, setValues] = useState<FormValues>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const updateValue = (key: string, value: string | boolean) => {
     setValues((previous) => ({
       ...previous,
       [key]: value,
     }));
+
     setSubmitted(false);
+    setError("");
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const registrationData = {
-      eventTitle,
-      fields: values,
-    };
+    if (isSubmitting) return;
 
-    // Prepared for CRM integration.
-    console.log("Event registration:", registrationData);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitted(false);
+    setError("");
+
+    try {
+      const response = await fetch("/api/events/event-registrations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventId,
+          fields: values,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ?? "Unable to submit your registration.",
+        );
+      }
+
+      setSubmitted(true);
+      setValues({});
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClassName =
@@ -70,6 +105,7 @@ export default function EventRegistrationForm({
         <h2 className="text-xl font-semibold text-zinc-900">
           Register for this event
         </h2>
+
         <p className="mt-3 text-sm leading-6 text-zinc-500">
           Registration is not available yet. Please check back later.
         </p>
@@ -186,21 +222,30 @@ export default function EventRegistrationForm({
           </div>
         ))}
 
+        {error && (
+          <p
+            role="alert"
+            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          >
+            {error}
+          </p>
+        )}
+
         {submitted && (
           <p
             role="status"
-            className="rounded-lg border border-amber-500 bg-amber-100 px-4 py-3 text-sm text-amber-700"
+            className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
           >
-            Your form is valid. Event registration submission will be connected
-            to the CRM in a later step.
+            Your registration for {eventTitle} has been submitted successfully!
           </p>
         )}
 
         <button
           type="submit"
-          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-amber-800"
+          disabled={isSubmitting}
+          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
         >
-          Register for Event
+          {isSubmitting ? "Submitting..." : "Register for Event"}
         </button>
 
         <p className="text-center text-xs leading-5 text-zinc-400">

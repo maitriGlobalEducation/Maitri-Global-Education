@@ -108,8 +108,9 @@ export default async function ScholarshipDetailPage({
           {/* Right: Wider application form */}
           <aside className="min-w-0 pt-4 lg:sticky lg:top-28 lg:self-start lg:pt-0">
             <ScholarshipApplicationForm
-              fields={scholarship.applicationForm?.fields ?? []}
+              scholarshipId={String(scholarship._id)}
               scholarshipTitle={scholarship.title}
+              fields={scholarship.applicationForm?.fields ?? []}
             />
           </aside>
         </div>

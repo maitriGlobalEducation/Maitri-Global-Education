@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import type { ScholarshipFormField } from "@/types/scholarship";
-import { toast } from "react-toastify";
 
 interface ScholarshipApplicationFormProps {
   fields: ScholarshipFormField[];
+  scholarshipId: string;
   scholarshipTitle: string;
 }
 
@@ -29,38 +29,65 @@ const countryOptions = [
 
 export default function ScholarshipApplicationForm({
   fields,
+  scholarshipId,
   scholarshipTitle,
 }: ScholarshipApplicationFormProps) {
   const [values, setValues] = useState<FormValues>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const updateValue = (key: string, value: string | boolean) => {
     setValues((previous) => ({
       ...previous,
       [key]: value,
     }));
+
     setSubmitted(false);
+    setError("");
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Prepared for CRM integration later.
-    const applicationData = {
-      scholarshipTitle,
-      fields: values,
-    };
+    if (isSubmitting) return;
 
-    // toast.error(
-    //   "Your form is valid. Application submission will be connected to the CRM in a later step.",
-    //   {
-    //     style: {
-    //       width: "250px",
-    //     },
-    //   },
-    // );
-    console.log("Scholarship application:", applicationData);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitted(false);
+    setError("");
+
+    try {
+      const response = await fetch(
+        "/api/scholarship/scholarship-applications",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            scholarshipId,
+            fields: values,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message ?? "Unable to submit your application.");
+      }
+
+      setSubmitted(true);
+      setValues({});
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClassName =
@@ -72,6 +99,7 @@ export default function ScholarshipApplicationForm({
         <h2 className="text-xl font-semibold text-zinc-900">
           Apply for this scholarship
         </h2>
+
         <p className="mt-3 text-sm leading-6 text-zinc-500">
           The application form has not been configured yet. Please check back
           later.
@@ -95,7 +123,8 @@ export default function ScholarshipApplicationForm({
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-zinc-500">
-          Fill in your details below to begin your application.
+          Fill in your details below to begin your application for{" "}
+          {scholarshipTitle}.
         </p>
       </div>
 
@@ -125,7 +154,7 @@ export default function ScholarshipApplicationForm({
             ) : (
               <>
                 <label
-                  htmlFor={field.key}
+                  htmlFor={`scholarship-${field.key}`}
                   className="block text-sm font-medium text-zinc-700"
                 >
                   {field.label}
@@ -136,7 +165,7 @@ export default function ScholarshipApplicationForm({
 
                 {field.type === "select" ? (
                   <select
-                    id={field.key}
+                    id={`scholarship-${field.key}`}
                     name={field.key}
                     required={field.required}
                     value={String(values[field.key] ?? "")}
@@ -147,7 +176,7 @@ export default function ScholarshipApplicationForm({
                   >
                     <option value="">Select {field.label}</option>
 
-                    {(field.key === "country"
+                    {(field.key.toLowerCase() === "country"
                       ? countryOptions
                       : (field.options ?? [])
                     ).map((option) => (
@@ -158,7 +187,7 @@ export default function ScholarshipApplicationForm({
                   </select>
                 ) : (
                   <input
-                    id={field.key}
+                    id={`scholarship-${field.key}`}
                     name={field.key}
                     type={
                       field.type === "phone"
@@ -187,21 +216,31 @@ export default function ScholarshipApplicationForm({
           </div>
         ))}
 
+        {error && (
+          <p
+            role="alert"
+            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          >
+            {error}
+          </p>
+        )}
+
         {submitted && (
           <p
             role="status"
-            className="rounded-lg bg-amber-100 border border-amber-500 px-4 py-3 text-sm text-amber-700"
+            className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
           >
-            Your form is valid. Application submission will be connected to the
-            CRM very soon.
+            Your application for {scholarshipTitle} has been submitted
+            successfully!
           </p>
         )}
 
         <button
           type="submit"
-          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-amber-800"
+          disabled={isSubmitting}
+          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
         >
-          Submit Application
+          {isSubmitting ? "Submitting..." : "Submit Application"}
         </button>
 
         <p className="text-center text-xs leading-5 text-zinc-400">
