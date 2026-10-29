@@ -208,7 +208,7 @@ export default async function BlogsPage({ searchParams }: BlogsPageProps) {
       className="bg-[#fafafa] py-10 sm:py-14 lg:py-30"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-        <header className="mb-9 max-w-3xl sm:mb-12 lg:mb-14">
+        <header className="my-20 lg:my-0 max-w-3xl sm:mb-12 lg:mb-14">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
             Maitri Global Education
           </p>

@@ -114,12 +114,7 @@ export default function ContactSection() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         {/* Section heading */}
-        <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-          {/* <span className="inline-flex items-center gap-2 rounded-full border border-[#d59425] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gold-gradient shadow-sm sm:text-sm">
-            <span className="size-2 rounded-full bg-[#8A6420]" />
-            Let&apos;s connect
-          </span> */}
-
+        <div className="mx-auto my-14 max-w-2xl text-center sm:mb-16">
           <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">
             Let&apos;s start a{" "}
             <span className="text-gold-gradient">conversation.</span>

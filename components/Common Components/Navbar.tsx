@@ -416,7 +416,7 @@ export default function Navbar() {
                           <Icon
                             size={18}
                             strokeWidth={1.4}
-                            className="shrink-0 text-[#ff704f]"
+                            className="shrink-0 text-[#D4AF37]"
                           />
                           <span>{title}</span>
                           <ArrowUpRight
@@ -427,14 +427,14 @@ export default function Navbar() {
                       ))}
                     </div>
 
-                    <Link
+                    {/* <Link
                       href="/explore/college"
                       onClick={closeMobileMenu}
                       className="mt-2 flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#D4AF37]"
                     >
                       View all colleges
                       <ArrowUpRight size={14} />
-                    </Link>
+                    </Link> */}
 
                     <p className="mb-2 mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#D4AF37]">
                       Maitri Courses
