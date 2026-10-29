@@ -98,7 +98,10 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#faf9f7] py-16 sm:py-20 lg:py-28">
+    <section
+      data-navbar-theme="light"
+      className="relative overflow-hidden bg-[#faf9f7] py-16 sm:py-20 lg:py-28"
+    >
       {/* Subtle background accents */}
       <div
         aria-hidden="true"
