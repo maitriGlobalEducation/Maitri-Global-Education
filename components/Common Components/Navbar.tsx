@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ExploreAreaItem } from "@/services/areas.service";
+import Image from "next/image";
 
 const navLinks = [
   { title: "HOME", href: "/" },
@@ -30,32 +32,32 @@ const navLinks = [
 const exploreColleges = [
   {
     title: "Art, Fashion & Design",
-    href: "/explore/college/art-fashion-design",
+    href: "/explore/art-fashion-design",
     Icon: Palette,
   },
   {
     title: "Film, Animation, Media & Acting",
-    href: "/explore/college/film-animation-media-acting",
+    href: "/explore/film-animation-media-acting",
     Icon: Clapperboard,
   },
   {
     title: "Hospitality & Culinary Arts",
-    href: "/explore/college/hospitality-culinary-arts",
+    href: "/explore/hospitality-culinary-arts",
     Icon: CookingPot,
   },
   {
     title: "Business & Management",
-    href: "/explore/college/business-management",
+    href: "/explore/business-management",
     Icon: BriefcaseBusiness,
   },
   {
     title: "Medical",
-    href: "/explore/college/medical",
+    href: "/explore/medical",
     Icon: HeartPulse,
   },
   {
     title: "Engineering, Humanities & Social Sciences",
-    href: "/explore/college/engineering-humanities-social-sciences",
+    href: "/explore/engineering-humanities-social-sciences",
     Icon: Cpu,
   },
 ];
@@ -73,7 +75,11 @@ const maitriCourses = [
   },
 ];
 
-export default function Navbar() {
+type NavbarProps = {
+  exploreAreas: ExploreAreaItem[];
+};
+
+export default function Navbar({ exploreAreas }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [exploreOpen, setExploreOpen] = useState(false);
@@ -256,20 +262,29 @@ export default function Navbar() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {exploreColleges.map(({ title, href, Icon }) => (
+                      {exploreAreas.map((area) => (
                         <Link
-                          key={href}
-                          href={href}
+                          key={area._id}
+                          href={`/explore/${area.slug}`}
                           onClick={() => setExploreOpen(false)}
                           className="group flex min-h-22 flex-col items-center justify-center gap-2 rounded-md bg-white px-3 py-4 text-center shadow-[0_5px_25px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.12)]"
                         >
-                          <Icon
-                            size={27}
-                            strokeWidth={1.25}
-                            className="text-[#D4AF37] transition-transform duration-200 group-hover:scale-110 group-hover:text-[#e4bd40]"
-                          />
+                          {area.image ? (
+                            <Image
+                              src={area.image}
+                              alt={area.name}
+                              width={56}
+                              height={56}
+                              className="size-12 rounded-md object-cover transition-transform duration-200 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="flex size-14 items-center justify-center rounded-md bg-[#D4AF37]/10 text-lg font-semibold text-[#D4AF37]">
+                              {area.name.charAt(0)}
+                            </div>
+                          )}
+
                           <span className="text-sm leading-5 text-zinc-700 group-hover:text-[#d8b133]">
-                            {title}
+                            {area.name}
                           </span>
                         </Link>
                       ))}
@@ -406,19 +421,29 @@ export default function Navbar() {
                     </p>
 
                     <div className="space-y-1">
-                      {exploreColleges.map(({ title, href, Icon }) => (
+                      {exploreAreas.map((area) => (
                         <Link
-                          key={href}
-                          href={href}
+                          key={area._id}
+                          href={`/explore/${area.slug}`}
                           onClick={closeMobileMenu}
-                          className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm text-white/75 transition hover:bg-white/5 hover:text-white"
+                          className="flex items-center gap-3 rounded-lg px-3 py-3 text-xs text-white/75 transition hover:bg-white/5 hover:text-white"
                         >
-                          <Icon
-                            size={18}
-                            strokeWidth={1.4}
-                            className="shrink-0 text-[#D4AF37]"
-                          />
-                          <span>{title}</span>
+                          {area.image ? (
+                            <Image
+                              src={area.image}
+                              alt={area.name}
+                              width={36}
+                              height={36}
+                              className="size-9 shrink-0 rounded-md object-cover"
+                            />
+                          ) : (
+                            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-[#D4AF37]/10 text-sm font-semibold text-[#D4AF37]">
+                              {area.name.charAt(0)}
+                            </div>
+                          )}
+
+                          <span>{area.name}</span>
+
                           <ArrowUpRight
                             size={14}
                             className="ml-auto shrink-0 text-white/30"
@@ -426,15 +451,6 @@ export default function Navbar() {
                         </Link>
                       ))}
                     </div>
-
-                    {/* <Link
-                      href="/explore/college"
-                      onClick={closeMobileMenu}
-                      className="mt-2 flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#D4AF37]"
-                    >
-                      View all colleges
-                      <ArrowUpRight size={14} />
-                    </Link> */}
 
                     <p className="mb-2 mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#D4AF37]">
                       Maitri Courses
@@ -446,7 +462,7 @@ export default function Navbar() {
                           key={href}
                           href={href}
                           onClick={closeMobileMenu}
-                          className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm text-white/75 transition hover:bg-white/5 hover:text-white"
+                          className="flex items-center gap-3 rounded-lg px-3 py-3 text-xs text-white/75 transition hover:bg-white/5 hover:text-white"
                         >
                           <Icon
                             size={18}
