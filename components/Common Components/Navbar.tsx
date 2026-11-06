@@ -6,12 +6,6 @@ import {
   X,
   ArrowUpRight,
   ChevronDown,
-  Palette,
-  Clapperboard,
-  CookingPot,
-  BriefcaseBusiness,
-  HeartPulse,
-  Cpu,
   PanelsTopLeft,
   Languages,
 } from "lucide-react";
@@ -23,43 +17,10 @@ import Image from "next/image";
 const navLinks = [
   { title: "HOME", href: "/" },
   { title: "SCHOLARSHIPS", href: "/scholarships" },
-  { title: "BLOGS", href: "/blogs" },
   { title: "EVENTS", href: "/events" },
+  { title: "BLOGS", href: "/blogs" },
   { title: "ABOUT", href: "/about" },
   { title: "CONTACT US", href: "/contact" },
-];
-
-const exploreColleges = [
-  {
-    title: "Art, Fashion & Design",
-    href: "/explore/art-fashion-design",
-    Icon: Palette,
-  },
-  {
-    title: "Film, Animation, Media & Acting",
-    href: "/explore/film-animation-media-acting",
-    Icon: Clapperboard,
-  },
-  {
-    title: "Hospitality & Culinary Arts",
-    href: "/explore/hospitality-culinary-arts",
-    Icon: CookingPot,
-  },
-  {
-    title: "Business & Management",
-    href: "/explore/business-management",
-    Icon: BriefcaseBusiness,
-  },
-  {
-    title: "Medical",
-    href: "/explore/medical",
-    Icon: HeartPulse,
-  },
-  {
-    title: "Engineering, Humanities & Social Sciences",
-    href: "/explore/engineering-humanities-social-sciences",
-    Icon: Cpu,
-  },
 ];
 
 const maitriCourses = [

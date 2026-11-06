@@ -172,13 +172,9 @@ function InfoRow({ icon: Icon, text, filled = false }: InfoRowProps) {
   return (
     <div className="flex items-start gap-3">
       {filled ? (
-        <span className="mt-2 size-2.5 shrink-0 rounded-full bg-[#ff5a00]" />
+        <span className="mt-2 size-2.5 shrink-0 rounded-full bg-gold" />
       ) : (
-        <Icon
-          size={18}
-          strokeWidth={2}
-          className="mt-1 shrink-0 text-[#ff5a00]"
-        />
+        <Icon size={18} strokeWidth={2} className="mt-1 shrink-0 text-gold" />
       )}
 
       <p className="text-sm leading-6 text-[#344054] sm:text-base sm:leading-7">
@@ -207,11 +203,7 @@ function ServiceItem({ icon: Icon, text }: ServiceItemProps) {
         duration-300
       "
     >
-      <Icon
-        size={18}
-        strokeWidth={2}
-        className="mt-0.5 shrink-0 text-[#ff5a00]"
-      />
+      <Icon size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-gold" />
 
       <p className="text-sm leading-6 text-[#344054] sm:text-base">{text}</p>
     </div>

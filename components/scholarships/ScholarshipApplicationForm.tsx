@@ -238,7 +238,7 @@ export default function ScholarshipApplicationForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-amber-700 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-amber-800 disabled:cursor-wait disabled:opacity-60"
+          className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-gold-gradient px-5 py-3.5 text-sm font-semibold transition  disabled:cursor-wait disabled:opacity-60"
         >
           {isSubmitting ? "Submitting..." : "Submit Application"}
         </button>

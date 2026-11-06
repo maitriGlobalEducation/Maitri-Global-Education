@@ -72,7 +72,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
       <div className="mx-auto w-full max-w-375 px-4 pt-24 pb-8 sm:px-8 sm:pt-28 sm:pb-12 lg:px-12 lg:pt-32 xl:px-16">
         <Link
           href="/blogs"
-          className="mb-4 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+          className="mb-4 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors duration-300 hover:border-amber-300 hover:bg-amber-100 hover:text-gold"
         >
           <span aria-hidden="true">←</span>
           Back to blogs

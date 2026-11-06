@@ -24,7 +24,7 @@ export default function AboutPage() {
           </h2>
 
           {/* Orange underline */}
-          <div className="mx-auto mt-3 h-1 w-20 rounded-full bg-[#ff5a00] sm:w-24" />
+          <div className="mx-auto mt-3 h-1 w-20 rounded-full bg-gold-gradient sm:w-24" />
 
           {/* Introduction */}
           <p

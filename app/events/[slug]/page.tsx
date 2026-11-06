@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: EventPageProps) {
           <div className="min-w-0">
             <Link
               href="/events"
-              className="mb-6 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+              className="mb-6 mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-amber-300 hover:bg-amber-100 hover:text-gold"
             >
               <span aria-hidden="true">←</span>
               Back to Events

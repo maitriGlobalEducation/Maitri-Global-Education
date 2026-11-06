@@ -68,7 +68,7 @@ const VisionAndMission = () => {
           </h3>
 
           {/* Accent */}
-          <div className="mt-3 h-1 w-16 rounded-full bg-[#ff5a00]" />
+          <div className="mt-3 h-1 w-16 rounded-full bg-gold-gradient" />
 
           {/* Intro */}
           <p
@@ -103,7 +103,7 @@ const VisionAndMission = () => {
             "
           >
             <div className="flex items-start gap-3">
-              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-[#ff5a00]" />
+              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-gold" />
 
               <p className="text-sm leading-7 text-[#344054] sm:text-base">
                 MGE guides the student in discerning and decision making, in the
@@ -112,7 +112,7 @@ const VisionAndMission = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-[#ff5a00]" />
+              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-gold" />
 
               <p className="text-sm leading-7 text-[#344054] sm:text-base">
                 MGE is dedicated to find institutions where, talented students
@@ -122,7 +122,7 @@ const VisionAndMission = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-[#ff5a00]" />
+              <span className="mt-2.5 size-2 shrink-0 rounded-full bg-gold" />
 
               <p className="text-sm leading-7 text-[#344054] sm:text-base">
                 MGE engages to enhance the international learning by

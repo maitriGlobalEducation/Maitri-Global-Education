@@ -347,7 +347,7 @@ export default function ContactSection() {
                     onChange={(e) =>
                       updateField("termsAccepted", e.target.checked)
                     }
-                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#f4511e]"
+                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#D4AF37]"
                   />
                   <span className="text-xs leading-6 text-zinc-600 sm:text-sm">
                     I have read the{" "}
@@ -355,7 +355,7 @@ export default function ContactSection() {
                       href="/terms"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium text-[#e94717] underline underline-offset-2 hover:text-[#c53610]"
+                      className="font-medium text-gold underline underline-offset-2 hover:text-[#c53610]"
                     >
                       Terms
                     </Link>{" "}
@@ -373,7 +373,7 @@ export default function ContactSection() {
                     onChange={(e) =>
                       updateField("marketingConsent", e.target.checked)
                     }
-                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#f4511e]"
+                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#D4AF37]"
                   />
                   <span className="text-xs leading-6 text-zinc-500 sm:text-sm">
                     I agree to receive information about scholarships, courses,
@@ -389,7 +389,7 @@ export default function ContactSection() {
                     onChange={(e) =>
                       updateField("profilingConsent", e.target.checked)
                     }
-                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#f4511e]"
+                    className="mt-1 size-4 shrink-0 cursor-pointer accent-[#D4AF37]"
                   />
                   <span className="text-xs leading-6 text-zinc-500 sm:text-sm">
                     I agree to the use of my personal data for profiling
