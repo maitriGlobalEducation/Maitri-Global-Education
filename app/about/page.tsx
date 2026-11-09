@@ -1,5 +1,6 @@
 import AboutPage from "@/components/About Page Components/About";
-import ContactSection from "@/components/Contact Page Components/ContactSection";
+import AboutFAQ from "@/components/About Page Components/AboutFAQ";
+import AboutServicesSection from "@/components/About Page Components/AboutServicesSection";
 import Testimonials from "@/components/Home Page Components/Testimonials";
 import { getPublicTestimonials } from "@/services/testimonial.service";
 
@@ -8,8 +9,9 @@ const page = async () => {
   return (
     <>
       <AboutPage />
+      <AboutServicesSection />
       <Testimonials testimonials={testimonials} />
-      <ContactSection />
+      <AboutFAQ />
     </>
   );
 };
