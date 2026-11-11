@@ -28,17 +28,7 @@ const itemVariants = {
   },
 };
 
-const benefits = [
-  "Established international education consultancy since 2009.",
-  "More than 10,000 students supported.",
-  "International university and institutional partnerships.",
-  "Free one-on-one education counselling.",
-  "Scholarship and admission assistance.",
-  "International presence in Italy, India and Dubai.",
-  "Practical student support beyond university admissions.",
-];
-
-export default function AboutServicesSection() {
+export default function ServicesSection() {
   return (
     <main className="w-full overflow-hidden bg-white">
       {/* Hero */}
@@ -196,57 +186,66 @@ export default function AboutServicesSection() {
               <motion.article
                 key={service.number}
                 variants={itemVariants}
-                className="group rounded-2xl border border-zinc-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-300/70 hover:shadow-xl hover:shadow-amber-900/5 sm:p-8"
+                className="group relative rounded-xl border border-zinc-200/80 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-300/70 hover:shadow-lg hover:shadow-amber-900/5 sm:p-6"
               >
-                <div className="mb-6 flex items-start gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#101828] text-sm font-semibold text-amber-300 transition-colors duration-300 group-hover:bg-gold-gradient">
+                {/* Header */}
+                <div className="mb-5 flex items-center gap-3.5">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#101828] text-xs font-semibold tracking-wide text-amber-300 transition-colors duration-300 group-hover:bg-gold-gradient">
                     {service.number}
                   </span>
 
-                  <h3 className="text-xl leading-snug font-medium text-[#101828] sm:text-2xl">
+                  <h3 className="text-lg leading-snug font-semibold text-[#101828] sm:text-xl">
                     {service.title}
                   </h3>
+
+                  <div className="ml-auto hidden h-px w-10 shrink-0 bg-amber-300/60 transition-all duration-300 group-hover:w-16 sm:block" />
                 </div>
 
-                <div className="space-y-4 text-sm leading-7 text-zinc-600 sm:text-base">
-                  {service.intro.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
+                {/* Intro */}
+                {service.intro.length > 0 && (
+                  <div className="space-y-3 text-sm leading-6 text-zinc-600">
+                    {service.intro.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                )}
 
+                {/* Label */}
                 {service.label && (
-                  <p className="mt-6 font-semibold text-[#101828]">
+                  <p className="mt-5 text-sm font-semibold text-[#101828]">
                     {service.label}
                   </p>
                 )}
 
+                {/* Items */}
                 {service.items && (
-                  <ul className="mt-4 space-y-3">
+                  <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
                     {service.items.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-3 text-sm leading-6 text-zinc-600 sm:text-base"
+                        className="flex items-start gap-2.5 text-sm leading-6 text-zinc-600"
                       >
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 )}
 
+                {/* Groups */}
                 {service.groups && (
-                  <div className="mt-6 space-y-6">
+                  <div className="mt-5 grid gap-5 sm:grid-cols-2">
                     {service.groups.map((group) => (
                       <div key={group.title}>
-                        <h4 className="font-semibold text-[#101828]">
+                        <h4 className="text-sm font-semibold text-[#101828]">
                           {group.title}
                         </h4>
 
-                        <ul className="mt-3 space-y-3">
+                        <ul className="mt-2 space-y-2">
                           {group.items.map((item) => (
                             <li
                               key={item}
-                              className="flex items-start gap-3 text-sm leading-6 text-zinc-600 sm:text-base"
+                              className="flex items-start gap-2.5 text-sm leading-6 text-zinc-600"
                             >
                               <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
                               <span>{item}</span>
@@ -258,8 +257,9 @@ export default function AboutServicesSection() {
                   </div>
                 )}
 
+                {/* Outro */}
                 {service.outro && (
-                  <p className="mt-6 border-t border-zinc-100 pt-5 text-sm leading-7 text-zinc-600 sm:text-base">
+                  <p className="mt-5 border-t border-zinc-100 pt-4 text-sm leading-6 text-zinc-600">
                     {service.outro}
                   </p>
                 )}
@@ -268,86 +268,6 @@ export default function AboutServicesSection() {
           </motion.div>
         </div>
       </motion.section>
-
-      {/* Why Maitri */}
-      <section className="bg-[#f8f7f4] px-6 py-20 sm:px-10 lg:px-16 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
-              The Maitri Difference
-            </span>
-
-            <h2
-              style={{ fontFamily: "Epika" }}
-              className="mt-4 text-3xl leading-tight font-medium text-[#101828] sm:text-4xl"
-            >
-              Why Choose Maitri Global Education?
-            </h2>
-
-            <div className="mt-6 h-1 w-16 rounded-full bg-gold-gradient" />
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {benefits.map((benefit, index) => (
-              <div
-                key={benefit}
-                className="flex items-start gap-4 rounded-xl border border-zinc-200/80 bg-white p-5"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                <p className="text-sm leading-6 font-medium text-zinc-700">
-                  {benefit}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden bg-[#101828] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-amber-400/10 blur-3xl" />
-
-        <div className="relative mx-auto max-w-4xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">
-            Take the First Step
-          </span>
-
-          <h2
-            style={{ fontFamily: "Epika" }}
-            className="mt-5 text-3xl leading-tight font-medium text-white sm:text-4xl lg:text-5xl"
-          >
-            Start Your Study Abroad Journey with Maitri
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-white/70">
-            Whether you are planning to study in Italy, pursue a master's degree
-            in Europe, apply to an international design school or explore
-            undergraduate education abroad, Maitri Global Education can help you
-            understand your options.
-          </p>
-
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-white/70">
-            Our team is ready to guide you through university selection,
-            admissions, scholarships and the practical preparations required to
-            study overseas.
-          </p>
-
-          <Link
-            href="/contact"
-            className="mt-8 inline-flex cursor-pointer items-center justify-center rounded-lg bg-gold-gradient px-7 py-4 text-sm font-semibold text-[#101828] transition duration-300 hover:scale-[1.03]"
-          >
-            Book your free study abroad counselling session today.
-          </Link>
-
-          <p className="mt-8 text-sm leading-7 text-white/50">
-            Maitri Global Education – Your partner in international education,
-            from admission to arrival.
-          </p>
-        </div>
-      </section>
     </main>
   );
 }

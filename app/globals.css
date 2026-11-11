@@ -380,10 +380,30 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
+  }
+}
+
+.destination-marquee {
+  animation: destination-scroll 35s linear infinite;
+}
+
+.destination-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes destination-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
   }
 }

@@ -80,21 +80,24 @@ const VisionAndMission = () => {
 
         {/* ==================== OUR MISSION ==================== */}
         <motion.div
-          className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+          className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
           {/* Mission Image */}
-          <motion.div variants={imageVariants} className="group relative">
+          <motion.div
+            variants={imageVariants}
+            className="group relative lg:h-full"
+          >
             <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-bl-3xl border-b-2 border-l-2 border-amber-400/60" />
 
-            <div className="relative overflow-hidden rounded-3xl">
+            <div className="relative h-80 overflow-hidden rounded-3xl sm:h-100 lg:h-full">
               <img
-                src="/Images/mission.jpg"
+                src="/Images/About/Mission-2.jpeg"
                 alt="Students exploring international education opportunities"
-                className="h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-100 lg:h-125"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
               <div className="absolute inset-0 bg-linear-to-t from-[#101828]/60 via-transparent to-transparent" />
@@ -108,7 +111,10 @@ const VisionAndMission = () => {
           </motion.div>
 
           {/* Mission Content */}
-          <motion.div variants={containerVariants} className="flex flex-col">
+          <motion.div
+            variants={containerVariants}
+            className="flex flex-col justify-center"
+          >
             <motion.span
               variants={itemVariants}
               className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-600"
@@ -131,7 +137,7 @@ const VisionAndMission = () => {
 
             <motion.div
               variants={containerVariants}
-              className="mt-8 space-y-5 text-sm leading-8 text-[#475467] sm:text-base"
+              className="mt-8 space-y-5 text-sm leading-6 text-[#475467] sm:text-base"
             >
               <motion.p variants={itemVariants}>
                 At Maitri Global Education, our mission is to make international
@@ -204,33 +210,26 @@ const VisionAndMission = () => {
 
             <motion.div
               variants={containerVariants}
-              className="mt-8 space-y-5 text-sm leading-8 text-[#475467] sm:text-base"
+              className="mt-8 space-y-5 text-sm leading-6 text-[#475467] sm:text-base"
             >
               <motion.p variants={itemVariants}>
                 Our vision is to become a trusted global education partner,
-                connecting students, universities and educational institutions
-                across international borders.
+                connecting students, universities and institutions across
+                borders.
               </motion.p>
 
               <motion.p variants={itemVariants}>
-                We envision a future where geographical boundaries do not
-                restrict access to quality education, where students can explore
-                diverse academic opportunities and where international learning
-                creates meaningful personal and professional growth.
+                We believe geographical boundaries should never limit access to
+                quality education. Every student deserves the opportunity to
+                explore global academic pathways and achieve meaningful personal
+                and professional growth.
               </motion.p>
 
               <motion.p variants={itemVariants}>
-                Through our international presence in Florence, Italy, India and
-                Dubai, we aim to strengthen educational partnerships, encourage
-                cultural exchange and create opportunities for students to
-                become confident global citizens.
-              </motion.p>
-
-              <motion.p variants={itemVariants}>
-                We aspire to build an international education ecosystem where
-                students receive not only academic guidance but also the
-                practical support and connections they need to thrive in a new
-                country.
+                With our presence in Florence, Italy, India and Dubai, we aim to
+                strengthen international partnerships, encourage cultural
+                exchange and provide students with the guidance and support to
+                thrive as global citizens.
               </motion.p>
             </motion.div>
 
@@ -256,7 +255,7 @@ const VisionAndMission = () => {
 
             <div className="relative overflow-hidden rounded-3xl">
               <img
-                src="/Images/vision.jpg"
+                src="/Images/About/About-Hero-2.jpeg"
                 alt="International students experiencing global education"
                 className="h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-100 lg:h-125"
               />

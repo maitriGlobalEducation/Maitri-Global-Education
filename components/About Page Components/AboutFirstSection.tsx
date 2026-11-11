@@ -2,6 +2,44 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+const destinations = [
+  {
+    country: "Italy",
+    description:
+      "Study fashion, design, business, architecture and specialised postgraduate programmes at Italian universities and design institutions.",
+  },
+  {
+    country: "France",
+    description:
+      "Explore international programmes in fashion, design, business, arts and related disciplines.",
+  },
+  {
+    country: "Germany",
+    description:
+      "Discover higher education opportunities across business, engineering, technology and other academic fields.",
+  },
+  {
+    country: "Spain",
+    description:
+      "Explore international undergraduate and postgraduate study opportunities.",
+  },
+  {
+    country: "Ireland",
+    description:
+      "Discover internationally recognised programmes across business, technology and other disciplines.",
+  },
+  {
+    country: "United Kingdom",
+    description:
+      "Explore undergraduate and postgraduate education opportunities at UK institutions.",
+  },
+  {
+    country: "United Arab Emirates",
+    description:
+      "Discover international education opportunities, including programmes in Dubai.",
+  },
+];
+
 const containerVariants = {
   hidden: {},
   visible: {
@@ -30,13 +68,13 @@ const itemVariants = {
 const AboutFirstSection = () => {
   return (
     <section className="relative overflow-hidden">
-      {/* ==================== HERO ==================== */}
+      {/* HERO */}
       <section className="relative isolate flex min-h-175 w-full items-center overflow-hidden bg-[#101828] sm:min-h-170 lg:min-h-187.5">
         {/* Background Image */}
         <div
           className="absolute inset-0 -z-20 bg-cover bg-center"
           style={{
-            backgroundImage: "url('/Images/students.jpg')",
+            backgroundImage: "url('/Images/About/About-Hero-2.jpeg')",
           }}
         />
 
@@ -47,7 +85,7 @@ const AboutFirstSection = () => {
         <div className="absolute inset-0 -z-10 bg-linear-to-t from-[#101828]/40 via-transparent to-transparent" />
 
         {/* Hero Content */}
-        <div className="mx-auto w-full max-w-7xl px-6 pb-32 pt-20 sm:px-10 sm:pb-36 lg:px-16">
+        <div className="mx-auto w-full max-w-360 px-6 pb-32 pt-20 sm:px-10 sm:pb-36 lg:px-16">
           <motion.div
             className="max-w-3xl sm:translate-y-12 lg:translate-y-16"
             variants={containerVariants}
@@ -57,9 +95,9 @@ const AboutFirstSection = () => {
             {/* Eyebrow */}
             <motion.div
               variants={itemVariants}
-              className="mb-6 inline-flex items-center gap-3"
+              className="my-6 inline-flex items-center gap-3"
             >
-              <span className="h-px w-10 bg-amber-400" />
+              <span className="h-px w-4 lg:w-10 bg-amber-400" />
 
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-sm">
                 About Maitri Global Education
@@ -70,10 +108,10 @@ const AboutFirstSection = () => {
             <motion.h1
               variants={itemVariants}
               style={{ fontFamily: "Epika" }}
-              className="text-4xl font-medium leading-[1.2] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+              className="text-3xl font-medium leading-[1.2] tracking-tight text-white sm:text-5xl md:text-6xl"
             >
               Your Trusted Study Abroad Consultants in India
-              <span className="mt-3 block bg-gold-gradient bg-clip-text text-transparent">
+              <span className="mt-3 block bg-gold-gradient bg-clip-text text-2xl lg:text-5xl text-transparent">
                 Connecting Students with Global Education Opportunities Since
                 2009
               </span>
@@ -130,7 +168,7 @@ const AboutFirstSection = () => {
           }}
           className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-[#101828]/40 backdrop-blur-sm"
         >
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 sm:px-10 lg:px-16">
+          <div className="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-6 py-5 sm:px-10 lg:px-16">
             <p className="text-xs tracking-wide text-white/60 sm:text-sm">
               Florence, Italy <span className="mx-2 text-amber-400">•</span>
               India <span className="mx-2 text-amber-400">•</span> Dubai
@@ -144,7 +182,7 @@ const AboutFirstSection = () => {
 
         {/* Bottom information strip */}
         <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-[#101828]/40 backdrop-blur-sm">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-5 sm:px-10 lg:px-16">
+          <div className="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-6 py-5 sm:px-10 lg:px-16">
             <p className="text-xs tracking-wide text-white/60 sm:text-sm">
               Florence, Italy <span className="mx-2 text-amber-400">•</span>{" "}
               India
@@ -160,7 +198,7 @@ const AboutFirstSection = () => {
 
       {/* Our Story */}
       <div className="px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-360">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -229,7 +267,7 @@ const AboutFirstSection = () => {
 
       {/* Who We Are */}
       <div className="bg-[#f9fafb] px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-360">
           {/* Intro */}
           <motion.div
             variants={containerVariants}
@@ -341,7 +379,7 @@ const AboutFirstSection = () => {
 
       {/* Why Choose Maitri */}
       <div className="px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-360">
           {/* Section Heading */}
           <motion.div
             variants={containerVariants}
@@ -449,7 +487,7 @@ const AboutFirstSection = () => {
       <div className="relative overflow-hidden bg-[#101828] px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
         <div className="absolute -right-32 top-0 h-96 w-96 rounded-full bg-amber-400/10 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl">
+        <div className="relative mx-auto max-w-360">
           {/* Section Heading */}
           <motion.div
             variants={containerVariants}
@@ -495,80 +533,54 @@ const AboutFirstSection = () => {
           </motion.div>
 
           {/* Destination Cards */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {[
-              {
-                country: "Italy",
-                description:
-                  "Study fashion, design, business, architecture and specialised postgraduate programmes at Italian universities and design institutions.",
-              },
-              {
-                country: "France",
-                description:
-                  "Explore international programmes in fashion, design, business, arts and related disciplines.",
-              },
-              {
-                country: "Germany",
-                description:
-                  "Discover higher education opportunities across business, engineering, technology and other academic fields.",
-              },
-              {
-                country: "Spain",
-                description:
-                  "Explore international undergraduate and postgraduate study opportunities.",
-              },
-              {
-                country: "Ireland",
-                description:
-                  "Discover internationally recognised programmes across business, technology and other disciplines.",
-              },
-              {
-                country: "United Kingdom",
-                description:
-                  "Explore undergraduate and postgraduate education opportunities at UK institutions.",
-              },
-              {
-                country: "United Arab Emirates",
-                description:
-                  "Discover international education opportunities, including programmes in Dubai.",
-              },
-            ].map((destination, index) => (
-              <motion.div
-                key={destination.country}
-                variants={itemVariants}
-                className="group rounded-2xl border border-white/10 bg-white/4 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/40 hover:bg-white/[0.07]"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium tracking-widest text-amber-300/60">
-                    DESTINATION {String(index + 1).padStart(2, "0")}
-                  </span>
 
-                  <span className="text-amber-300 transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </div>
-
-                <h3
-                  style={{ fontFamily: "Epika" }}
-                  className="mt-5 text-2xl font-semibold text-white"
+          {/* Destinations Marquee */}
+          <div className="relative mt-12 overflow-hidden">
+            <motion.div
+              className="flex w-max gap-4"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                duration: 35,
+                ease: "linear",
+                repeat: Infinity,
+              }}
+              whileHover={{ animationPlayState: "paused" }}
+            >
+              {[...destinations, ...destinations].map((destination, index) => (
+                <div
+                  key={`${destination.country}-${index}`}
+                  className="group w-80 shrink-0 rounded-2xl border border-white/10 bg-white/4 p-6 transition-all duration-300 hover:border-amber-400/40 hover:bg-white/[0.07] sm:w-90"
                 >
-                  {destination.country}
-                </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium tracking-widest text-amber-300/60">
+                      DESTINATION{" "}
+                      {String((index % destinations.length) + 1).padStart(
+                        2,
+                        "0",
+                      )}
+                    </span>
 
-                <div className="mt-4 h-0.5 w-10 rounded-full bg-gold-gradient" />
+                    <span className="text-amber-300 transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </div>
 
-                <p className="mt-5 text-sm leading-7 text-white/60">
-                  {destination.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+                  <h3
+                    style={{ fontFamily: "Epika" }}
+                    className="mt-5 text-2xl font-semibold text-white"
+                  >
+                    {destination.country}
+                  </h3>
+
+                  <div className="mt-4 h-0.5 w-10 rounded-full bg-gold-gradient" />
+
+                  <p className="mt-5 text-sm leading-7 text-white/60">
+                    {destination.description}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
 
           {/* Disclaimer */}
           <motion.p
@@ -586,7 +598,7 @@ const AboutFirstSection = () => {
 
       {/* Our Approach */}
       <div className="px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-360">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -698,7 +710,7 @@ const AboutFirstSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="mx-auto max-w-5xl text-center"
+          className="mx-auto max-w-360 text-center"
         >
           <motion.span
             variants={itemVariants}
@@ -771,8 +783,7 @@ const AboutFirstSection = () => {
                 href="/contact"
                 className="mt-8 inline-flex cursor-pointer items-center gap-3 rounded-xl bg-gold-gradient px-7 py-4 text-sm font-semibold shadow-lg shadow-amber-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                Book your free study abroad counselling session and take the
-                first step towards your international education journey.
+                Book free study abroad counselling session
                 <span aria-hidden="true">→</span>
               </motion.a>
             </motion.div>

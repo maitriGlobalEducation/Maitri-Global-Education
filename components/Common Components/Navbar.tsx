@@ -19,6 +19,7 @@ const navLinks = [
   { title: "SCHOLARSHIPS", href: "/scholarships" },
   { title: "EVENTS", href: "/events" },
   { title: "BLOGS", href: "/blogs" },
+  { title: "SERVICES", href: "/services" },
   { title: "ABOUT", href: "/about" },
   { title: "CONTACT US", href: "/contact" },
 ];
@@ -127,7 +128,7 @@ export default function Navbar({ exploreAreas }: NavbarProps) {
             : "border-b border-transparent bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8 lg:px-10">
+      <nav className="mx-auto flex max-w-360 items-center justify-between px-5 py-3 sm:px-8 lg:px-10">
         <Link
           href="/"
           aria-label="Maitri Global Education home"
